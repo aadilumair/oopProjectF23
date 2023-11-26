@@ -1,0 +1,27 @@
+#Windows Stuff#
+x64
+oopProject1.vcxproj
+oopProject1.vcxproj.filters
+oopProject1.vcxproj.users
+openal32.dll
+sfml-audio-2.dll
+sfml-audio-d-2.dll
+sfml-graphics-2.dll
+sfml-graphics-d-2.dll
+sfml-network-2.dll
+sfml-network-d-2.dll
+sfml-system-2.dll
+sfml-system-d-2.dll
+sfml-window-2.dll
+sfml-window-d-2.dll
+
+
+# OS generated files #
+######################
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
