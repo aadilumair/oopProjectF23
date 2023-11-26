@@ -2,7 +2,8 @@
 x64
 oopProject1.vcxproj
 oopProject1.vcxproj.filters
-oopProject1.vcxproj.users
+oopProject1.vcxproj.user
+
 openal32.dll
 sfml-audio-2.dll
 sfml-audio-d-2.dll
