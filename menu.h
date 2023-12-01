@@ -9,9 +9,9 @@ public:
     //add menu attributes here
     Menu()
     {
-        bg_texture.loadFromFile("img/background.jpg");
+        bg_texture.loadFromFile("img/Menu.png");
         background.setTexture(bg_texture);
-        background.setScale(2, 1.5);
+        background.setScale(1, 1);
     }
 
     void display_menu()
