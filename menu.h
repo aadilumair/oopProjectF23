@@ -30,18 +30,23 @@ public:
             window.display();
             if (Keyboard::isKeyPressed(Keyboard::S)) {
                 window.close();
-                break;
+                Game g;
+                g.start_game();
+            }
+            if (Keyboard::isKeyPressed(Keyboard::I)) {
+                std::cout << "I pressed";
+                window.close();
+            }
+            if (Keyboard::isKeyPressed(Keyboard::E)) {
+                window.close();
+            }
+            if (Keyboard::isKeyPressed(Keyboard::H)) {
+                std::cout << "H pressed";
+                window.close();
             }
 
         }
-        Game g;
-        //display menu screen here
-
-        // add functionality of all the menu options here
-
-        //if Start game option is chosen 
-
-        g.start_game();
+        
 
 
 
