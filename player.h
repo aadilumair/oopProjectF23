@@ -23,9 +23,11 @@ public:
 	}
 	void move(std::string s) {
 		float delta_x = 0, delta_y = 0;
-		//if(s=="l")
+		if (s == "l")
+			std::cout << "l";
 			//move the player left
-		//else if(s=="r")
+		else if(s=="r")
+			std::cout << "r";
 			//move the player right
 		if (s == "u")
 			delta_y = -1;

@@ -1,5 +1,6 @@
 #Windows Stuff#
 x64
+.vs
 oopProject1.vcxproj
 oopProject1.vcxproj.filters
 oopProject1.vcxproj.user

@@ -1,19 +1,39 @@
 
 #include "game.h"
 class Menu {
+    Sprite background; //Game background sprite
+    Texture bg_texture;
+
 public:
 
     //add menu attributes here
     Menu()
     {
-
-        //constructors body
+        bg_texture.loadFromFile("img/background.jpg");
+        background.setTexture(bg_texture);
+        background.setScale(2, 1.5);
     }
 
     void display_menu()
 
     {
+        RenderWindow window(VideoMode(780, 780), title);
+        while (window.isOpen()) {
+            Event e;
+            while (window.pollEvent(e))
+            {
+                if (e.type == Event::Closed) // If cross/close is clicked/pressed
+                    window.close(); //close the game                        	    
+            }
+            window.clear(Color::Black);
+            window.draw(background);
+            window.display();
+            if (Keyboard::isKeyPressed(Keyboard::S)) {
+                window.close();
+                break;
+            }
 
+        }
         Game g;
         //display menu screen here
 

@@ -40,7 +40,7 @@ public:
 
     Game()
     {
-       
+        p = new Player(".\\img\\enemy_1.png");
         bg_texture.loadFromFile("img/background.jpg");
         background.setTexture(bg_texture);
         background.setScale(2, 1.5);
