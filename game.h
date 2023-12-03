@@ -3,7 +3,7 @@
 #include <time.h>
 #include <iostream>
 using namespace std;
-#include "player.h"
+#include "car.h"
 const char title[] = "OOP-Project, Spring-2023";
 using namespace sf;
 
@@ -40,10 +40,11 @@ public:
 
     Game()
     {
-        p = new Player(".\\img\\enemy_1.png");
+        
         bg_texture.loadFromFile("img/maze1.png");
         background.setTexture(bg_texture);
         background.setScale(1, 1);
+        p = new Player(".\\img\\enemy_1.png");
         initializeSmallBoxes();
 
     }
@@ -89,6 +90,7 @@ public:
 
             window.clear(Color::Black); //clears the screen
             window.draw(background);  // setting background
+            window.draw(p->car);
            
 
             // Move and draw small boxes

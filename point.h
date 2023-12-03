@@ -5,8 +5,7 @@
 class Point
 {
 public:
-	Point(int xVal = 0, int yVal = 0);;
-	~Point();
+	Point(int xVal = 0, int yVal = 0);
 
 	int getX();
 	int getY();
