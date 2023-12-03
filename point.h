@@ -35,10 +35,12 @@ int Point::getY(){
 
 bool Point::setX(int newX) {
 	x = newX;
+	return true;
 }
 
 bool Point::setY(int newY) {
 	y = newY;
+	return true;
 }
 void Point::move(int dx, int dy) {
 	x += dx;
