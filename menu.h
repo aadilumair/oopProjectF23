@@ -4,7 +4,7 @@ class Menu {
     Sprite background; //Game background sprite
     Texture bg_texture;
 
-    void display_instructions() {
+    void dispHelp() {
         bg_texture.loadFromFile("img/black.png");
         background.setTexture(bg_texture);
         background.setScale(1, 1);
@@ -21,12 +21,11 @@ class Menu {
             window.display();
             if (Keyboard::isKeyPressed(Keyboard::S)) {
                 window.close();
-                Game g;
-                g.start_game();
+                playGame();
             }
             if (Keyboard::isKeyPressed(Keyboard::B)) {
                 window.close();
-                display_menu();
+                dispMenu();
             }
             if (Keyboard::isKeyPressed(Keyboard::E)) {
                 window.close();
@@ -34,7 +33,7 @@ class Menu {
         }
     }
 
-    void display_high_scores() {
+    void dispHighScores() {
         bg_texture.loadFromFile("img/black.png");
         background.setTexture(bg_texture);
         background.setScale(1, 1);
@@ -51,25 +50,28 @@ class Menu {
             window.display();
             if (Keyboard::isKeyPressed(Keyboard::S)) {
                 window.close();
-                Game g;
-                g.start_game();
+                playGame();
             }
             if (Keyboard::isKeyPressed(Keyboard::B)) {
                 window.close();
-                display_menu();
+                dispMenu();
             }
             if (Keyboard::isKeyPressed(Keyboard::E)) {
                 window.close();
             }
         }
+    }
+
+    void playGame() {
+        Game g;
+        g.start_game();
     }
 
 public:
-    Menu()
-    {
+    Menu(){
     }
 
-    void display_menu(){
+    void dispMenu(){
         bg_texture.loadFromFile("img/newMenu.png");
         background.setTexture(bg_texture);
         background.setScale(1, 1);
@@ -86,19 +88,18 @@ public:
             window.display();
             if (Keyboard::isKeyPressed(Keyboard::S)) {
                 window.close();
-                Game g;
-                g.start_game();
+                playGame();
             }
             if (Keyboard::isKeyPressed(Keyboard::I)) {
                 window.close();
-                display_instructions();
+                dispHelp();
             }
             if (Keyboard::isKeyPressed(Keyboard::E)) {
                 window.close();
             }
             if (Keyboard::isKeyPressed(Keyboard::H)) {
                 window.close();
-                display_high_scores();
+                dispHighScores();
             }
         }
     }

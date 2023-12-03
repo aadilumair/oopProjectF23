@@ -3,6 +3,6 @@ int main()
 {
     //madebyhassan
     Menu m;
-    m.display_menu();
+    m.dispMenu();
     return 0;
 }
