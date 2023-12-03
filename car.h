@@ -39,10 +39,10 @@ public:
 	void move(std::string s) {
 		float delta_x = 0, delta_y = 0;
 		if (s == "l")
-			std::cout << "l";
-			//move the player left
-		else if(s=="r")
-			std::cout << "r";
+			delta_x = -1;
+		//move the player left
+		else if (s == "r")
+			delta_x = 1;
 			//move the player right
 		if (s == "u")
 			delta_y = -1;
