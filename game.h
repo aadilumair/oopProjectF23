@@ -41,9 +41,9 @@ public:
     Game()
     {
         p = new Player(".\\img\\enemy_1.png");
-        bg_texture.loadFromFile("img/background.jpg");
+        bg_texture.loadFromFile("img/maze1.png");
         background.setTexture(bg_texture);
-        background.setScale(2, 1.5);
+        background.setScale(1, 1);
         initializeSmallBoxes();
 
     }
