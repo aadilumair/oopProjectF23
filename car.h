@@ -41,7 +41,7 @@ Player::Player(std::string png_path){
 	carTexture.loadFromFile(png_path);
 	car.setTexture(carTexture);
 	car.setPosition(340, 700);
-	car.setScale(0.75, 0.75);
+	car.setScale(0.50, 0.50);
 }
 
 int Player::getHealth() {
