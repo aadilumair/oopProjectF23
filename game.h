@@ -61,7 +61,7 @@ public:
         RenderWindow window(VideoMode(780, 780), title);
         Clock clock;
         float timer = 0;
-
+        
         while (window.isOpen())
         {
             float time = clock.getElapsedTime().asSeconds();

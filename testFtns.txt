@@ -1,0 +1,27 @@
+void runTest(int i, int j) {
+	int Arr[] = { 99,171,235,289,366,440,498,560,634 };
+	
+			car.setPosition(Arr[i], Arr[j]);
+			std::cout<<"(" << car.getPosition().x << "," << car.getPosition().y << ")\n";
+			Sleep(3000);
+		
+}
+
+
+
+//std::cout << "(" << car.getPosition().x << "," << car.getPosition().y << ")\n";
+
+
+            if (i == 9) {
+                i = 0;
+                j++;
+            }
+            if (j == 9) {
+                i = 0;
+                j = 0;
+            }
+            
+            p->runTest(i, j);
+            i++;
+
+int i = 0, j = 0;

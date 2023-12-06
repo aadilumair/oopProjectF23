@@ -1,5 +1,6 @@
 #include <SFML/Graphics.hpp>
 #include<string.h>
+#include<windows.h>
 using namespace sf;
 
 class Car
@@ -37,12 +38,12 @@ public:
 };
 
 Player::Player(std::string png_path){
-	speed = 0.1;
+	speed = 1;
 	health = 3;
 	carTexture.loadFromFile(png_path);
 	car.setTexture(carTexture);
-	car.setPosition(340, 700);
-	car.setScale(0.08, 0.08);
+	car.setPosition(99, 99);
+	car.setScale(0.06, 0.06);
 }
 
 int Player::getHealth() {
@@ -81,7 +82,6 @@ void Player::move(std::string s) {
 	delta_y *= speed;
 
 	car.move(delta_x, delta_y);
-
 }
 
 class Enemy : Car
