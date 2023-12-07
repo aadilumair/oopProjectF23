@@ -87,7 +87,7 @@ public:
             ////////////////////////////////////////////////
             /////  Call your functions here            ////
             //////////////////////////////////////////////
-
+            p->moveFwd();
             window.clear(Color::Black); //clears the screen
             window.draw(background);  // setting background
             window.draw(p->car);
