@@ -7,7 +7,7 @@ struct Coord {
 };
 struct Ring
 {
-	Coord A, B, C, D;
+	Coord A, B, C, D, E, F, G, H;
 };
 
 
@@ -68,6 +68,15 @@ Player::Player(std::string png_path){
 	R[0].D.x = 634;
 	R[0].D.y = 99;
 
+	R[0].E.x = 366;
+	R[0].E.y = 99;
+	R[0].F.x = 99;
+	R[0].F.y = 366;
+	R[0].G.x = 366;
+	R[0].G.y = 634;
+	R[0].H.x = 634;
+	R[0].H.y = 366;
+
 	R[1].A.x = 171;
 	R[1].A.y = 171;
 	R[1].B.x = 171;
@@ -76,6 +85,15 @@ Player::Player(std::string png_path){
 	R[1].C.y = 560;
 	R[1].D.x = 560;
 	R[1].D.y = 171;
+
+	R[1].E.x = 366;
+	R[1].E.y = 171;
+	R[1].F.x = 171;
+	R[1].F.y = 366;
+	R[1].G.x = 366;
+	R[1].G.y = 560;
+	R[1].H.x = 560;
+	R[1].H.y = 366;
 
 	R[2].A.x = 235;
 	R[2].A.y = 235;
@@ -86,6 +104,15 @@ Player::Player(std::string png_path){
 	R[2].D.x = 498;
 	R[2].D.y = 235;
 
+	R[2].E.x = 366;
+	R[2].E.y = 235;
+	R[2].F.x = 235;
+	R[2].F.y = 366;
+	R[2].G.x = 366;
+	R[2].G.y = 498;
+	R[2].H.x = 498;
+	R[2].H.y = 366;
+
 	R[3].A.x = 289;
 	R[3].A.y = 289;
 	R[3].B.x = 289;
@@ -95,7 +122,14 @@ Player::Player(std::string png_path){
 	R[3].D.x = 440;
 	R[3].D.y = 289;
 
-
+	R[3].E.x = 366;
+	R[3].E.y = 289;
+	R[3].F.x = 289;
+	R[3].F.y = 366;
+	R[3].G.x = 366;
+	R[3].G.y = 440;
+	R[3].H.x = 440;
+	R[3].H.y = 366;
 
 
 }
@@ -120,28 +154,44 @@ bool Player::modifyHealth(int h) {
 }
 
 void Player::move(std::string s) {
-	float delta_x = 0, delta_y = 0;
 	if (s == "l")
-		delta_x = -1;
-	//move the player left
-	else if (s == "r")
-		delta_x = 1;
-	//move the player right
-	if (s == "u")
-		delta_y = -1;
-	else if (s == "d")
-		delta_y = 1;
-
-	delta_x *= speed;
-	delta_y *= speed;
-
-	car.move(delta_x, delta_y);
+	{
+		if (currRing < 3) {//Move to inner ring
+			currRing++;
+			if (moveDir == 'l') {
+				car.setPosition(R[currRing].E.x, R[currRing].E.y);
+			}
+			if (moveDir == 'r') {
+				car.setPosition(R[currRing].G.x, R[currRing].G.y);
+			}
+			if (moveDir == 'u') {
+				car.setPosition(R[currRing].H.x, R[currRing].H.y);
+			}
+			if (moveDir == 'd') {
+				car.setPosition(R[currRing].F.x, R[currRing].F.y);
+			}
+		}
+	}
+	else if (s == "r") {//move to outer ring
+		if (currRing > 0) {
+			currRing--;
+			if (moveDir == 'l') {
+				car.setPosition(R[currRing].E.x, R[currRing].E.y);
+			}
+			if (moveDir == 'r') {
+				car.setPosition(R[currRing].G.x, R[currRing].G.y);
+			}
+			if (moveDir == 'u') {
+				car.setPosition(R[currRing].H.x, R[currRing].H.y);
+			}
+			if (moveDir == 'd') {
+				car.setPosition(R[currRing].F.x, R[currRing].F.y);
+			}
+		}
+	}
 }
 
 void Player::moveFwd() {
-	
-	
-		
 		if ((car.getPosition().x == R[currRing].A.x) && (car.getPosition().y == R[currRing].A.y))//corner A 
 		{
 			moveDir = 'd';//set movement to down
@@ -158,11 +208,9 @@ void Player::moveFwd() {
 		{
 			moveDir = 'l';//set movement to left
 		}
-	
-	
 
 	if (moveDir == 'u') {
-		if (car.getPosition().y - 1 * speed < R[currRing].D.y) {
+		if (car.getPosition().y - 1 * speed < R[currRing].D.y) { //Check if the movement will make it go out of bounds or not
 			car.setPosition(R[currRing].D.x, R[currRing].D.y);
 		}
 		else {
@@ -170,7 +218,7 @@ void Player::moveFwd() {
 		}
 	}
 	if (moveDir == 'd') {
-		if (car.getPosition().y + 1 * speed > R[currRing].B.y) {
+		if (car.getPosition().y + 1 * speed > R[currRing].B.y) { //Check if the movement will make it go out of bounds or not
 			car.setPosition(R[currRing].B.x, R[currRing].B.y);
 		}
 		else {
@@ -178,7 +226,7 @@ void Player::moveFwd() {
 		}	
 	}
 	if (moveDir == 'l') {
-		if (car.getPosition().x - 1 * speed < R[currRing].A.x) {
+		if (car.getPosition().x - 1 * speed < R[currRing].A.x) { //Check if the movement will make it go out of bounds or not
 			car.setPosition(R[currRing].A.x, R[currRing].A.y);
 		}
 		else {
@@ -186,7 +234,7 @@ void Player::moveFwd() {
 		}
 	}
 	if (moveDir == 'r') {
-		if (car.getPosition().x + 1 * speed > R[currRing].C.x) {
+		if (car.getPosition().x + 1 * speed > R[currRing].C.x) { //Check if the movement will make it go out of bounds or not
 			car.setPosition(R[currRing].C.x, R[currRing].C.y);
 		}
 		else {

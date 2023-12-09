@@ -61,7 +61,7 @@ public:
         RenderWindow window(VideoMode(780, 780), title);
         Clock clock;
         float timer = 0;
-        
+        bool leftClick = false, rightClick = false;
         while (window.isOpen())
         {
             float time = clock.getElapsedTime().asSeconds();
@@ -74,12 +74,31 @@ public:
                 if (e.type == Event::Closed) // If cross/close is clicked/pressed
                     window.close(); //close the game                        	    
             }
+            
+            if (Keyboard::isKeyPressed(Keyboard::Left)) //If left key is CLICKED
+                leftClick = true;
+                
+            if (e.type == sf::Event::KeyReleased) {
+                if (e.key.code == sf::Keyboard::Left) {
+                    if (leftClick) {
+                        p->move("l");    // Player will move to INNER RING
+                        leftClick = false;
+                    }
+                }
+            }
+            
+            if (Keyboard::isKeyPressed(Keyboard::Right)) // If right key is CLICKED
+                rightClick = true;
+            if (e.type == sf::Event::KeyReleased) {
+                if (e.key.code == sf::Keyboard::Right) {
+                    if (rightClick) {
+                        p->move("r");    // Player will move to OUTER RING
+                        rightClick = false;
+                    }
+                }
+            }
 
-            if (Keyboard::isKeyPressed(Keyboard::Left)) //If left key is pressed
-                p->move("l");    // Player will move to left
-            if (Keyboard::isKeyPressed(Keyboard::Right)) // If right key is pressed
-                p->move("r");  //player will move to right
-            if (Keyboard::isKeyPressed(Keyboard::Up)) //If up key is pressed
+                if (Keyboard::isKeyPressed(Keyboard::Up)) //If up key is pressed
                 p->move("u");    //playet will move upwards
             if (Keyboard::isKeyPressed(Keyboard::Down)) // If down key is pressed
                 p->move("d");  //player will move downwards
