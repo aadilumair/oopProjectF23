@@ -57,6 +57,7 @@ Player::Player(std::string png_path){
 	car.setScale(0.06, 0.06);
 
 	moveDir = 'r';
+	currRing = 0;
 
 	R[0].A.x = 99;
 	R[0].A.y = 99;
@@ -140,7 +141,7 @@ void Player::move(std::string s) {
 void Player::moveFwd() {
 	
 	
-		cout << "";
+		
 		if ((car.getPosition().x == R[currRing].A.x) && (car.getPosition().y == R[currRing].A.y))//corner A 
 		{
 			moveDir = 'd';//set movement to down
@@ -161,16 +162,36 @@ void Player::moveFwd() {
 	
 
 	if (moveDir == 'u') {
-		car.move(0, -1 * speed);
+		if (car.getPosition().y - 1 * speed < R[currRing].D.y) {
+			car.setPosition(R[currRing].D.x, R[currRing].D.y);
+		}
+		else {
+			car.move(0, -1 * speed);
+		}
 	}
 	if (moveDir == 'd') {
-		car.move(0, 1 * speed);
+		if (car.getPosition().y + 1 * speed > R[currRing].B.y) {
+			car.setPosition(R[currRing].B.x, R[currRing].B.y);
+		}
+		else {
+			car.move(0, 1 * speed);
+		}	
 	}
 	if (moveDir == 'l') {
-		car.move(-1 * speed, 0);
+		if (car.getPosition().x - 1 * speed < R[currRing].A.x) {
+			car.setPosition(R[currRing].A.x, R[currRing].A.y);
+		}
+		else {
+			car.move(-1 * speed, 0);
+		}
 	}
 	if (moveDir == 'r') {
-		car.move(1 * speed, 0);
+		if (car.getPosition().x + 1 * speed > R[currRing].C.x) {
+			car.setPosition(R[currRing].C.x, R[currRing].C.y);
+		}
+		else {
+			car.move(1 * speed, 0);
+		}
 	}
 }
 
