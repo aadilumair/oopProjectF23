@@ -24,6 +24,7 @@ protected:
 	Texture carTexture;
 	int currRing;
 	char moveDir;
+	bool closeToCar(int x, int y);
 };
 
 float Car::getSpeed() {
@@ -33,7 +34,21 @@ void Car::setSpeed(float spd) {
 	speed = spd;
 }
 
+bool Car::closeToCar(int x, int y) {
+	int b = 40;//bound length
+	
+	if ((((car.getPosition().y) > (y + b)) || ((car.getPosition().y) < (y - b))))
+	{
+		return false;
+	}
 
+	if ((((car.getPosition().x) > (x + b)) || ((car.getPosition().x) < (x - b))))
+	{
+		return false;
+	}
+	
+	return true;
+}
 
 class Player : public Car{
 private:
@@ -49,7 +64,7 @@ public:
 };
 
 Player::Player(std::string png_path){
-	speed = 0.5;
+	speed = 0.1;
 	health = 3;
 	carTexture.loadFromFile(png_path);
 	car.setTexture(carTexture);
@@ -130,8 +145,6 @@ Player::Player(std::string png_path){
 	R[3].G.y = 440;
 	R[3].H.x = 440;
 	R[3].H.y = 366;
-
-
 }
 
 int Player::getHealth() {
@@ -154,45 +167,58 @@ bool Player::modifyHealth(int h) {
 }
 
 void Player::move(std::string s) {
-	if (s == "l")
-	{
-		if (currRing < 3) {//Move to inner ring
-			currRing++;
-			if (moveDir == 'l') {
-				car.setPosition(R[currRing].E.x, R[currRing].E.y);
+	/*std::cout << closeToCar(R[currRing].E.x, R[currRing].E.y)
+		<< closeToCar(R[currRing].F.x, R[currRing].F.y)
+		<< closeToCar(R[currRing].G.x, R[currRing].G.y)
+		<< closeToCar(R[currRing].H.x, R[currRing].H.y)<<"\n";*/
+	
+	if (closeToCar(R[currRing].E.x, R[currRing].E.y)
+		|| closeToCar(R[currRing].F.x, R[currRing].F.y)
+		|| closeToCar(R[currRing].G.x, R[currRing].G.y)
+		|| closeToCar(R[currRing].H.x, R[currRing].H.y)
+		) {
+		if (s == "l")
+		{
+			if (currRing < 3) {//Move to inner ring
+				currRing++;
+				if (moveDir == 'l') {
+					car.setPosition(R[currRing].E.x, R[currRing].E.y);
+				}
+				if (moveDir == 'r') {
+					car.setPosition(R[currRing].G.x, R[currRing].G.y);
+				}
+				if (moveDir == 'u') {
+					car.setPosition(R[currRing].H.x, R[currRing].H.y);
+				}
+				if (moveDir == 'd') {
+					car.setPosition(R[currRing].F.x, R[currRing].F.y);
+				}
 			}
-			if (moveDir == 'r') {
-				car.setPosition(R[currRing].G.x, R[currRing].G.y);
-			}
-			if (moveDir == 'u') {
-				car.setPosition(R[currRing].H.x, R[currRing].H.y);
-			}
-			if (moveDir == 'd') {
-				car.setPosition(R[currRing].F.x, R[currRing].F.y);
+		}
+		else if (s == "r") {//move to outer ring
+			if (currRing > 0) {
+				currRing--;
+				if (moveDir == 'l') {
+					car.setPosition(R[currRing].E.x, R[currRing].E.y);
+				}
+				if (moveDir == 'r') {
+					car.setPosition(R[currRing].G.x, R[currRing].G.y);
+				}
+				if (moveDir == 'u') {
+					car.setPosition(R[currRing].H.x, R[currRing].H.y);
+				}
+				if (moveDir == 'd') {
+					car.setPosition(R[currRing].F.x, R[currRing].F.y);
+				}
 			}
 		}
 	}
-	else if (s == "r") {//move to outer ring
-		if (currRing > 0) {
-			currRing--;
-			if (moveDir == 'l') {
-				car.setPosition(R[currRing].E.x, R[currRing].E.y);
-			}
-			if (moveDir == 'r') {
-				car.setPosition(R[currRing].G.x, R[currRing].G.y);
-			}
-			if (moveDir == 'u') {
-				car.setPosition(R[currRing].H.x, R[currRing].H.y);
-			}
-			if (moveDir == 'd') {
-				car.setPosition(R[currRing].F.x, R[currRing].F.y);
-			}
-		}
-	}
+	
+	
 }
 
 void Player::moveFwd() {
-		if ((car.getPosition().x == R[currRing].A.x) && (car.getPosition().y == R[currRing].A.y))//corner A 
+	if ((car.getPosition().x == R[currRing].A.x) && (car.getPosition().y == R[currRing].A.y))//corner A 
 		{
 			moveDir = 'd';//set movement to down
 		}

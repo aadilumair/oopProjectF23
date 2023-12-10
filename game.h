@@ -7,6 +7,8 @@ using namespace std;
 const char title[] = "OOP-Project, Spring-2023";
 using namespace sf;
 
+
+
 class Box
 {
 public:
@@ -33,8 +35,7 @@ public:
     Sprite background; //Game background sprite
     Texture bg_texture;
     Player* p; //player 
-    // add other game attributes
-    std::vector<Box> smallBoxes; // Declare the vector here
+    // add other game attributesstd::vector<Box> smallBoxes; // Declare the vector here
     int direction = 1; // Variable to store the direction of movement
 
 
@@ -45,14 +46,7 @@ public:
         background.setTexture(bg_texture);
         background.setScale(1, 1);
         p = new Player(".\\img\\fanoon_sprites\\duo.png");
-        initializeSmallBoxes();
 
-    }
-    void initializeSmallBoxes()
-    {
-        // Add code here to initialize small boxes as needed
-        smallBoxes.emplace_back(200.f, 300.f, 30.f, 30.f, 1); // Initial direction is 1 (right)
-        smallBoxes.emplace_back(400.f, 500.f, 30.f, 30.f, -1); // Initial direction is -1 (left)
     }
 
     void start_game()
@@ -112,25 +106,7 @@ public:
             window.draw(p->car);
            
 
-            // Move and draw small boxes
-            for (auto& smallBox : smallBoxes)
-            {
-                // Adjust the movement speed
-                float speed = 2.0f;
-
-                // Move the box
-                smallBox.move(speed, 0.0f);
-
-                // Check if the box reached the right or left boundary
-                if (smallBox.shape.getPosition().x + smallBox.shape.getSize().x > window.getSize().x ||
-                    smallBox.shape.getPosition().x < 0)
-                {
-                    // Reflect the direction if the box reached the boundary
-                    smallBox.direction = -smallBox.direction;
-                }
-
-                window.draw(smallBox.shape);
-            }
+            
 
 
             window.display();  //Displying all the sprites
