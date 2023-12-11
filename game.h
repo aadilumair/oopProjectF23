@@ -1,6 +1,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <time.h>
+#include <Windows.h>
 #include <iostream>
 using namespace std;
 #include "car.h"
@@ -10,6 +11,12 @@ using namespace sf;
 class Game{
 private:
     void checkForCollision();
+    bool endGame();
+    void pauseGame();
+    void resumeGame();
+
+    Text endMessage;
+    Text playPause;
 
 
 public:
@@ -33,13 +40,38 @@ void Game::checkForCollision() {
     for (int i = 0; i < noOfEnemies; i++) {
         if ((int(p->car.getPosition().x) == int((*en + i)->car.getPosition().x)) &&
             (int(p->car.getPosition().y) == int((*en + i)->car.getPosition().y))) {
-            p->setHealth(p->getHealth() - 1);
+            p->modifyHealth(-1);
             
             p->car.setPosition(p->R[0].G.x, p->R[0].G.y);
             p->currRing = 0;
             p->moveDir = 'r';
         }
     }
+}
+
+bool Game::endGame() {
+    if (p->getHealth() == 0) {
+        endMessage.setString("Wasted");
+        endMessage.setFont(font);
+        endMessage.setCharacterSize(60);
+        endMessage.setPosition(366, 50);
+        return true;
+    }
+    return false;
+}
+
+void Game::pauseGame() {
+    playPause.setString("Paused");
+    playPause.setFont(font);
+    playPause.setCharacterSize(60);
+    playPause.setPosition(366, 50);
+}
+
+void Game::resumeGame() {
+    playPause.setString("");
+    playPause.setFont(font);
+    playPause.setCharacterSize(60);
+    playPause.setPosition(366, 50);
 }
 
 Game::Game(int enemies)
@@ -117,11 +149,6 @@ void Game::start_game()
             }
         }
 
-        if (Keyboard::isKeyPressed(Keyboard::Up)) //If up key is pressed
-            p->move("u");    //playet will move upwards
-        if (Keyboard::isKeyPressed(Keyboard::Down)) // If down key is pressed
-            p->move("d");  //player will move downwards
-
         ////////////////////////////////////////////////
         /////  Call your functions here            ////
         //////////////////////////////////////////////
@@ -138,12 +165,30 @@ void Game::start_game()
         window.draw((*en)->car);
         window.draw(livesText);
 
+        if (Keyboard::isKeyPressed(Keyboard::P)) {
+            pauseGame();
+            window.draw(playPause);
+            window.display();
+            while (1) {
+                if(Keyboard::isKeyPressed(Keyboard::R))
+                    break;
+            }
+            resumeGame();
+            window.draw(playPause);
+            window.display();
+        }
 
+        if (endGame()){
+            window.draw(endMessage);
+            window.display();
+            break;
+        }
 
 
 
         window.display();  //Displying all the sprites
     }
-
+    Sleep(10000);
+    
 
 }
