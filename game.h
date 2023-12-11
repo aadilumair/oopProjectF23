@@ -34,6 +34,8 @@ class Game
 public:
     Sprite background; //Game background sprite
     Texture bg_texture;
+    Font font;
+    Text livesText;
     Player* p; //player 
     // add other game attributesstd::vector<Box> smallBoxes; // Declare the vector here
     int direction = 1; // Variable to store the direction of movement
@@ -57,6 +59,13 @@ public:
         for (int i = 0; i < noOfEnemies; i++) {
             *(en + i) = new Enemy(".\\img\\fanoon_sprites\\spooder.png", 2, 1);
         }
+
+        font.loadFromFile(".\\fonts\\ARCADECLASSIC.TTF");
+        livesText.setFont(font);
+        livesText.setCharacterSize(30);
+        livesText.setFillColor(Color::White);
+
+        
     }
 
     ~Game(){
@@ -120,10 +129,14 @@ public:
             //////////////////////////////////////////////
             p->moveFwd();
             (*en)->moveFwd();
+
+            livesText.setString(p->getStrHealth());
+
             window.clear(Color::Black); //clears the screen
             window.draw(background);  // setting background
             window.draw(p->car);
             window.draw((*en)->car);
+            window.draw(livesText);
            
 
             

@@ -59,6 +59,7 @@ private:
 public:
 	Player(std::string png_path);
 	int getHealth();
+	string getStrHealth();
 	bool setHealth(int);
 	bool modifyHealth(int);
 	void move(std::string s);
@@ -152,6 +153,11 @@ Player::Player(std::string png_path){
 int Player::getHealth() {
 	return health;
 }
+
+string Player::getStrHealth() {
+	return "Lives " + to_string(health);
+}
+
 bool Player::setHealth(int h) {
 	if (h >= 0) {
 		health = h;
@@ -292,7 +298,7 @@ Enemy::Enemy(std::string png_path, int max, int min)
 	speed = 0.1;
 	
 
-	moveDir = 'l';
+	moveDir = 'r';
 
 	R[0].A.x = 99;
 	R[0].A.y = 99;
@@ -385,7 +391,6 @@ void Enemy::move() {
 
 	string s;
 	int random = rand() % 100;
-	std::cout << random;
 	if ((random > 33) && (random< 66)) {
 		s = "l";
 	}
@@ -403,16 +408,16 @@ void Enemy::move() {
 		{
 			if (currRing < maxRing) {//Move to inner ring
 				currRing++;
-				if (moveDir == 'l') {
+				if (moveDir == 'r') {
 					car.setPosition(R[currRing].E.x, R[currRing].E.y);
 				}
-				if (moveDir == 'r') {
+				if (moveDir == 'l') {
 					car.setPosition(R[currRing].G.x, R[currRing].G.y);
 				}
-				if (moveDir == 'u') {
+				if (moveDir == 'd') {
 					car.setPosition(R[currRing].H.x, R[currRing].H.y);
 				}
-				if (moveDir == 'd') {
+				if (moveDir == 'u') {
 					car.setPosition(R[currRing].F.x, R[currRing].F.y);
 				}
 			}
@@ -420,16 +425,16 @@ void Enemy::move() {
 		else if (s == "r") {//move to outer ring
 			if (currRing > minRing) {
 				currRing--;
-				if (moveDir == 'l') {
+				if (moveDir == 'r') {
 					car.setPosition(R[currRing].E.x, R[currRing].E.y);
 				}
-				if (moveDir == 'r') {
+				if (moveDir == 'l') {
 					car.setPosition(R[currRing].G.x, R[currRing].G.y);
 				}
-				if (moveDir == 'u') {
+				if (moveDir == 'd') {
 					car.setPosition(R[currRing].H.x, R[currRing].H.y);
 				}
-				if (moveDir == 'd') {
+				if (moveDir == 'u') {
 					car.setPosition(R[currRing].F.x, R[currRing].F.y);
 				}
 			}
@@ -443,48 +448,48 @@ void Enemy::move() {
 void Enemy::moveFwd() { //This function is the default auto movement of the player counter clockwise
 	if ((car.getPosition().x == R[currRing].A.x) && (car.getPosition().y == R[currRing].A.y))//corner A 
 	{
-		moveDir = 'd';//set movement to down
+		moveDir = 'r';//set movement to right
 	}
 	if ((car.getPosition().x == R[currRing].B.x) && (car.getPosition().y == R[currRing].B.y))//corner B
 	{
-		moveDir = 'r';//set movement to right
+		moveDir = 'u';//set movement to up
 	}
 	if ((car.getPosition().x == R[currRing].C.x) && (car.getPosition().y == R[currRing].C.y))//corner C
 	{
-		moveDir = 'u';//set movement to up
+		moveDir = 'l';//set movement to left
 	}
 	if ((car.getPosition().x == R[currRing].D.x) && (car.getPosition().y == R[currRing].D.y))//corner D
 	{
-		moveDir = 'l';//set movement to left
+		moveDir = 'd';//set movement to down
 	}
 
 	if (moveDir == 'u') {
-		if (car.getPosition().y - 1 * speed < R[currRing].D.y) { //Check if the movement will make it go out of bounds or not
-			car.setPosition(R[currRing].D.x, R[currRing].D.y);
+		if (car.getPosition().y - 1 * speed < R[currRing].A.y) { //Check if the movement will make it go out of bounds or not
+			car.setPosition(R[currRing].A.x, R[currRing].A.y);
 		}
 		else {
 			car.move(0, -1 * speed);
 		}
 	}
 	if (moveDir == 'd') {
-		if (car.getPosition().y + 1 * speed > R[currRing].B.y) { //Check if the movement will make it go out of bounds or not
-			car.setPosition(R[currRing].B.x, R[currRing].B.y);
+		if (car.getPosition().y + 1 * speed > R[currRing].C.y) { //Check if the movement will make it go out of bounds or not
+			car.setPosition(R[currRing].C.x, R[currRing].C.y);
 		}
 		else {
 			car.move(0, 1 * speed);
 		}
 	}
 	if (moveDir == 'l') {
-		if (car.getPosition().x - 1 * speed < R[currRing].A.x) { //Check if the movement will make it go out of bounds or not
-			car.setPosition(R[currRing].A.x, R[currRing].A.y);
+		if (car.getPosition().x - 1 * speed < R[currRing].B.x) { //Check if the movement will make it go out of bounds or not
+			car.setPosition(R[currRing].B.x, R[currRing].B.y);
 		}
 		else {
 			car.move(-1 * speed, 0);
 		}
 	}
 	if (moveDir == 'r') {
-		if (car.getPosition().x + 1 * speed > R[currRing].C.x) { //Check if the movement will make it go out of bounds or not
-			car.setPosition(R[currRing].C.x, R[currRing].C.y);
+		if (car.getPosition().x + 1 * speed > R[currRing].D.x) { //Check if the movement will make it go out of bounds or not
+			car.setPosition(R[currRing].D.x, R[currRing].D.y);
 		}
 		else {
 			car.move(1 * speed, 0);
