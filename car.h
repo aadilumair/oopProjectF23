@@ -1,5 +1,3 @@
-#include<cstdlib>
-#include <time.h> 
 #include <SFML/Graphics.hpp>
 #include<string.h>
 using namespace sf;
@@ -286,12 +284,12 @@ public:
 	void setMaxRing(int r);
 	void setCurrRing(int r);
 	void randChangeRing();
-	void moveFwd();
+	void moveFwd(int playerRing);
 
 private:
 	int maxRing;
 	int minRing;
-	void move();
+	void move(int playerRing);
 };
 
 Enemy::Enemy(std::string png_path, int max, int min)
@@ -382,20 +380,17 @@ Enemy::Enemy(std::string png_path, int max, int min)
 	car.setScale(0.06, 0.06);
 }
 
-void Enemy::move() {
+void Enemy::move(int playerRing) {
 	/*this function moves an enemy between rings. It check
 	if the car is first close to points EFGH. Then it will
-	check the direction the car is going and appropriatly
-	moves the car b/w rings*/
-	srand(time(0));
-
-
-	string s;
+	check the ring the player is going and appropriatly
+	moves the enemy b/w rings*/
+	string s = "";
 	int random = rand() % 100;
-	if ((random > 33) && (random< 66)) {
+	if (playerRing>currRing) {
 		s = "l";
 	}
-	else if (random < 33) {
+	else if (playerRing < currRing) {
 		s = "r";
 	}
 
@@ -446,7 +441,7 @@ void Enemy::move() {
 }
 
 
-void Enemy::moveFwd() { //This function is the default auto movement of the player counter clockwise
+void Enemy::moveFwd(int playerRing) { //This function is the default auto movement of the player counter clockwise
 	if ((car.getPosition().x == R[currRing].A.x) && (car.getPosition().y == R[currRing].A.y))//corner A 
 	{
 		moveDir = 'r';//set movement to right
@@ -496,7 +491,7 @@ void Enemy::moveFwd() { //This function is the default auto movement of the play
 			car.move(1 * speed, 0);
 		}
 	}
-	move();
+	move(playerRing);
 }
 
 

@@ -153,7 +153,7 @@ void Game::start_game()
         /////  Call your functions here            ////
         //////////////////////////////////////////////
         p->moveFwd();
-        (*en)->moveFwd();
+        (*en)->moveFwd(p->currRing);
 
         checkForCollision();
 
