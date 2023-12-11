@@ -20,12 +20,13 @@ public:
 	void setSpeed(float spd);
 	Sprite car;
 	Ring R[4];
+	char moveDir;
+
+	int currRing;
 
 protected:
 	float speed;
 	Texture carTexture;
-	int currRing;
-	char moveDir;
 	bool closeToCar(int x, int y);
 };
 
