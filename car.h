@@ -1,3 +1,5 @@
+#include<cstdlib>
+#include <time.h> 
 #include <SFML/Graphics.hpp>
 #include<string.h>
 using namespace sf;
@@ -166,18 +168,19 @@ bool Player::modifyHealth(int h) {
 	return false;
 }
 
-void Player::move(std::string s) {
-	/*std::cout << closeToCar(R[currRing].E.x, R[currRing].E.y)
-		<< closeToCar(R[currRing].F.x, R[currRing].F.y)
-		<< closeToCar(R[currRing].G.x, R[currRing].G.y)
-		<< closeToCar(R[currRing].H.x, R[currRing].H.y)<<"\n";*/
-	
-	if (closeToCar(R[currRing].E.x, R[currRing].E.y)
+void Player::move(std::string s) { 
+	/*this function moves a player between rings. It check
+	if the car is first close to points EFGH. Then it will
+	check the direction the car is going and appropriatly 
+	moves the car b/w rings*/
+
+
+	if (closeToCar(R[currRing].E.x, R[currRing].E.y) //Check if the the car is close to a move point
 		|| closeToCar(R[currRing].F.x, R[currRing].F.y)
 		|| closeToCar(R[currRing].G.x, R[currRing].G.y)
 		|| closeToCar(R[currRing].H.x, R[currRing].H.y)
 		) {
-		if (s == "l")
+		if (s == "l") 
 		{
 			if (currRing < 3) {//Move to inner ring
 				currRing++;
@@ -217,7 +220,7 @@ void Player::move(std::string s) {
 	
 }
 
-void Player::moveFwd() {
+void Player::moveFwd() { //This function is the default auto movement of the player counter clockwise
 	if ((car.getPosition().x == R[currRing].A.x) && (car.getPosition().y == R[currRing].A.y))//corner A 
 		{
 			moveDir = 'd';//set movement to down
@@ -269,50 +272,227 @@ void Player::moveFwd() {
 	}
 }
 
-class Enemy : Car
+class Enemy : public Car
 {
 public:
-	Enemy(std::string png_path);
-	void move();
+	Enemy(std::string png_path, int max, int min);
 	void setMaxRing(int r);
 	void setCurrRing(int r);
 	void randChangeRing();
+	void moveFwd();
 
 private:
 	int maxRing;
+	int minRing;
+	void move();
 };
 
-Enemy::Enemy(std::string png_path)
+Enemy::Enemy(std::string png_path, int max, int min)
 {
 	speed = 0.1;
-	maxRing = 0;
-	currRing = 0;
+	
+
+	moveDir = 'l';
+
+	R[0].A.x = 99;
+	R[0].A.y = 99;
+	R[0].B.x = 99;
+	R[0].B.y = 634;
+	R[0].C.x = 634;
+	R[0].C.y = 634;
+	R[0].D.x = 634;
+	R[0].D.y = 99;
+
+	R[0].E.x = 366;
+	R[0].E.y = 99;
+	R[0].F.x = 99;
+	R[0].F.y = 366;
+	R[0].G.x = 366;
+	R[0].G.y = 634;
+	R[0].H.x = 634;
+	R[0].H.y = 366;
+
+	R[1].A.x = 171;
+	R[1].A.y = 171;
+	R[1].B.x = 171;
+	R[1].B.y = 560;
+	R[1].C.x = 560;
+	R[1].C.y = 560;
+	R[1].D.x = 560;
+	R[1].D.y = 171;
+
+	R[1].E.x = 366;
+	R[1].E.y = 171;
+	R[1].F.x = 171;
+	R[1].F.y = 366;
+	R[1].G.x = 366;
+	R[1].G.y = 560;
+	R[1].H.x = 560;
+	R[1].H.y = 366;
+
+	R[2].A.x = 235;
+	R[2].A.y = 235;
+	R[2].B.x = 235;
+	R[2].B.y = 498;
+	R[2].C.x = 498;
+	R[2].C.y = 498;
+	R[2].D.x = 498;
+	R[2].D.y = 235;
+
+	R[2].E.x = 366;
+	R[2].E.y = 235;
+	R[2].F.x = 235;
+	R[2].F.y = 366;
+	R[2].G.x = 366;
+	R[2].G.y = 498;
+	R[2].H.x = 498;
+	R[2].H.y = 366;
+
+	R[3].A.x = 289;
+	R[3].A.y = 289;
+	R[3].B.x = 289;
+	R[3].B.y = 440;
+	R[3].C.x = 440;
+	R[3].C.y = 440;
+	R[3].D.x = 440;
+	R[3].D.y = 289;
+
+	R[3].E.x = 366;
+	R[3].E.y = 289;
+	R[3].F.x = 289;
+	R[3].F.y = 366;
+	R[3].G.x = 366;
+	R[3].G.y = 440;
+	R[3].H.x = 440;
+	R[3].H.y = 366;
+
+	maxRing = max;
+	currRing = max;
+	minRing = min;
 	carTexture.loadFromFile(png_path);
 	car.setTexture(carTexture);
-	car.setPosition(340, 700);
-	car.setScale(0.75, 0.75);
+	car.setPosition(R[maxRing].E.x, R[maxRing].E.y);
+	car.setScale(0.06, 0.06);
 }
 
 void Enemy::move() {
-	float delta_x = 0, delta_y = 0;
-	string s = "l";
-	if (s == "l")
-		delta_x = -1;
-	//move the enemy left
-	else if (s == "r")
-		delta_x = 1;
-	//move the enemy right
-	if (s == "u")
-		delta_y = -1;
-	else if (s == "d")
-		delta_y = 1;
+	/*this function moves an enemy between rings. It check
+	if the car is first close to points EFGH. Then it will
+	check the direction the car is going and appropriatly
+	moves the car b/w rings*/
+	srand(time(0));
 
-	delta_x *= speed;
-	delta_y *= speed;
 
-	car.move(delta_x, delta_y);
+	string s;
+	int random = rand() % 100;
+	std::cout << random;
+	if ((random > 33) && (random< 66)) {
+		s = "l";
+	}
+	else if (random < 33) {
+		s = "r";
+	}
+
+
+	if (closeToCar(R[currRing].E.x, R[currRing].E.y) //Check if the the car is close to a move point
+		|| closeToCar(R[currRing].F.x, R[currRing].F.y)
+		|| closeToCar(R[currRing].G.x, R[currRing].G.y)
+		|| closeToCar(R[currRing].H.x, R[currRing].H.y)
+		) {
+		if (s == "l")
+		{
+			if (currRing < maxRing) {//Move to inner ring
+				currRing++;
+				if (moveDir == 'l') {
+					car.setPosition(R[currRing].E.x, R[currRing].E.y);
+				}
+				if (moveDir == 'r') {
+					car.setPosition(R[currRing].G.x, R[currRing].G.y);
+				}
+				if (moveDir == 'u') {
+					car.setPosition(R[currRing].H.x, R[currRing].H.y);
+				}
+				if (moveDir == 'd') {
+					car.setPosition(R[currRing].F.x, R[currRing].F.y);
+				}
+			}
+		}
+		else if (s == "r") {//move to outer ring
+			if (currRing > minRing) {
+				currRing--;
+				if (moveDir == 'l') {
+					car.setPosition(R[currRing].E.x, R[currRing].E.y);
+				}
+				if (moveDir == 'r') {
+					car.setPosition(R[currRing].G.x, R[currRing].G.y);
+				}
+				if (moveDir == 'u') {
+					car.setPosition(R[currRing].H.x, R[currRing].H.y);
+				}
+				if (moveDir == 'd') {
+					car.setPosition(R[currRing].F.x, R[currRing].F.y);
+				}
+			}
+		}
+	}
+
 
 }
+
+
+void Enemy::moveFwd() { //This function is the default auto movement of the player counter clockwise
+	if ((car.getPosition().x == R[currRing].A.x) && (car.getPosition().y == R[currRing].A.y))//corner A 
+	{
+		moveDir = 'd';//set movement to down
+	}
+	if ((car.getPosition().x == R[currRing].B.x) && (car.getPosition().y == R[currRing].B.y))//corner B
+	{
+		moveDir = 'r';//set movement to right
+	}
+	if ((car.getPosition().x == R[currRing].C.x) && (car.getPosition().y == R[currRing].C.y))//corner C
+	{
+		moveDir = 'u';//set movement to up
+	}
+	if ((car.getPosition().x == R[currRing].D.x) && (car.getPosition().y == R[currRing].D.y))//corner D
+	{
+		moveDir = 'l';//set movement to left
+	}
+
+	if (moveDir == 'u') {
+		if (car.getPosition().y - 1 * speed < R[currRing].D.y) { //Check if the movement will make it go out of bounds or not
+			car.setPosition(R[currRing].D.x, R[currRing].D.y);
+		}
+		else {
+			car.move(0, -1 * speed);
+		}
+	}
+	if (moveDir == 'd') {
+		if (car.getPosition().y + 1 * speed > R[currRing].B.y) { //Check if the movement will make it go out of bounds or not
+			car.setPosition(R[currRing].B.x, R[currRing].B.y);
+		}
+		else {
+			car.move(0, 1 * speed);
+		}
+	}
+	if (moveDir == 'l') {
+		if (car.getPosition().x - 1 * speed < R[currRing].A.x) { //Check if the movement will make it go out of bounds or not
+			car.setPosition(R[currRing].A.x, R[currRing].A.y);
+		}
+		else {
+			car.move(-1 * speed, 0);
+		}
+	}
+	if (moveDir == 'r') {
+		if (car.getPosition().x + 1 * speed > R[currRing].C.x) { //Check if the movement will make it go out of bounds or not
+			car.setPosition(R[currRing].C.x, R[currRing].C.y);
+		}
+		else {
+			car.move(1 * speed, 0);
+		}
+	}
+	move();
+}
+
 
 void Enemy::setMaxRing(int r){
 	maxRing = r;

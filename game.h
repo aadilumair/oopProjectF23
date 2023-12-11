@@ -37,9 +37,12 @@ public:
     Player* p; //player 
     // add other game attributesstd::vector<Box> smallBoxes; // Declare the vector here
     int direction = 1; // Variable to store the direction of movement
+    
+    int noOfEnemies;
+    Enemy** en;
 
 
-    Game()
+    Game(int enemies)
     {
         
         bg_texture.loadFromFile("img/maze1.png");
@@ -47,6 +50,21 @@ public:
         background.setScale(1, 1);
         p = new Player(".\\img\\fanoon_sprites\\duo.png");
 
+        noOfEnemies = enemies;
+
+        en = new Enemy * [noOfEnemies];
+
+        for (int i = 0; i < noOfEnemies; i++) {
+            *(en + i) = new Enemy(".\\img\\fanoon_sprites\\spooder.png", 2, 1);
+        }
+    }
+
+    ~Game(){
+        delete p;
+        for (int i = 0; i < noOfEnemies; i++) {
+            delete *(en + i);
+        }
+        delete en;
     }
 
     void start_game()
@@ -101,9 +119,11 @@ public:
             /////  Call your functions here            ////
             //////////////////////////////////////////////
             p->moveFwd();
+            (*en)->moveFwd();
             window.clear(Color::Black); //clears the screen
             window.draw(background);  // setting background
             window.draw(p->car);
+            window.draw((*en)->car);
            
 
             
