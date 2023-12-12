@@ -89,7 +89,14 @@ bool Game::endGame() {
         endMessage.setString("Wasted");
         endMessage.setFont(font);
         endMessage.setCharacterSize(60);
-        endMessage.setPosition(366, 50);
+        endMessage.setPosition(100, 366);
+        return true;
+    }
+    if (noOfFoods == 0) {
+        endMessage.setString("You win this level!");
+        endMessage.setFont(font);
+        endMessage.setCharacterSize(60);
+        endMessage.setPosition(10, 366);
         return true;
     }
     return false;

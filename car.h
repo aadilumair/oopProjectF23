@@ -66,7 +66,7 @@ public:
 };
 
 Player::Player(std::string png_path){
-	speed = 0.1;
+	speed = 0.9;
 	health = 3;
 	carTexture.loadFromFile(png_path);
 	car.setTexture(carTexture);
