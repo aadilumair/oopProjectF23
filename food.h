@@ -11,6 +11,12 @@ public:
 
 	Sprite food;
 
+	int getScore();
+	int getExtraLives();
+	float getBoost();
+	bool getHideEnemy();
+	int getDurationOfEffect();
+
 protected:
 	int score;
 	int extraLives;
@@ -24,6 +30,26 @@ protected:
 
 int Food::N = 8;
 int Food::coordArr[] = { 99, 171, 235, 289, 440, 498, 560, 634 };
+
+int Food::getScore() {
+	return score;
+}
+
+int Food::getExtraLives() {
+	return extraLives;
+}
+
+float Food::getBoost() {
+	return boost;
+}
+
+bool Food::getHideEnemy() {
+	return hideEnemy;
+}
+
+int Food::getDurationOfEffect() {
+	return durationOfEffect;
+}
 
 class RedFood : public Food
 {

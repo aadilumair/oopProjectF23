@@ -13,9 +13,13 @@ using namespace sf;
 class Game{
 private:
     void checkForCollision();
+    bool popFood(int i);
+    void checkForFoodCollision();
     bool endGame();
     void pauseGame();
     void resumeGame();
+
+    int score;
 
     Text endMessage;
     Text playPause;
@@ -54,6 +58,32 @@ void Game::checkForCollision() {
     }
 }
 
+bool Game::popFood(int i) {
+    if ((i < 0) || (i > noOfFoods)) {
+        return false;
+    }
+
+    delete* (foods + i);
+
+    for (int j = i; j < noOfFoods - 1; j++) {
+        *(foods + j) = *(foods + j + 1);
+    }
+    noOfFoods--;
+
+    return true;
+}
+
+void Game::checkForFoodCollision() {
+    for (int i = 0; i < noOfFoods; i++) {
+        if ((int(p->car.getPosition().x) == int((*(foods + i))->food.getPosition().x)) &&
+            (int(p->car.getPosition().y) == int((*(foods + i))->food.getPosition().y))) {
+            p->modifyHealth((*(foods+i))->getExtraLives());
+            score += (*(foods + i))->getScore();
+            popFood(i);
+        }
+    }
+}
+
 bool Game::endGame() {
     if (p->getHealth() == 0) {
         endMessage.setString("Wasted");
@@ -86,6 +116,8 @@ Game::Game(int enemies)
     background.setTexture(bg_texture);
     background.setScale(1, 1);
     p = new Player(".\\img\\fanoon_sprites\\duo.png");
+
+    score = 0;
 
     noOfEnemies = enemies;
 
@@ -200,16 +232,19 @@ void Game::start_game()
 
         livesText.setString(p->getStrHealth());
 
+        checkForFoodCollision();
+
         window.clear(Color::Black); //clears the screen
         window.draw(background);  // setting background
-        window.draw(p->car);
-        for (int i = 0; i < noOfEnemies; i++) {
-            window.draw((*(en+i))->car);
-        }
+        
         window.draw(livesText);
 
         for (int i = 0; i < noOfFoods; i++) {
             window.draw((*(foods + i))->food);
+        }
+        window.draw(p->car);
+        for (int i = 0; i < noOfEnemies; i++) {
+            window.draw((*(en + i))->car);
         }
 
         if (Keyboard::isKeyPressed(Keyboard::P)) {
