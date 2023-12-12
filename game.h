@@ -1,4 +1,5 @@
-
+#include<cstdlib>
+#include<time.h>
 #include <SFML/Graphics.hpp>
 #include <time.h>
 #include <Windows.h>
@@ -29,6 +30,9 @@ public:
     
     int noOfEnemies;
     Enemy** en;
+
+    int noOfFoods;
+    Food** foods;
 
     Game(int enemies);
     ~Game();
@@ -96,17 +100,49 @@ Game::Game(int enemies)
     livesText.setCharacterSize(30);
     livesText.setFillColor(Color::White);
 
+    srand(time(0));
+    noOfFoods = (Food::N) * (Food::N);
+    foods = new Food * [noOfFoods];
+    int x = 0;
+    int y = 0;
+    for (int i = 0; i < noOfFoods; i++) {
+        int random = rand() % 100;
+        if (random <= 25) {
+            *(foods + i) = new RedFood(Food::coordArr[x], Food::coordArr[y]);
+        }
+        if ((random > 25)&&(random <= 50)) {
+            *(foods + i) = new GreenFood(Food::coordArr[x], Food::coordArr[y]);
+        }
+        if ((random > 50) && (random <= 75)) {
+            *(foods + i) = new OrangeFood(Food::coordArr[x], Food::coordArr[y]);
+        }
+        if (random > 75) {
+            *(foods + i) = new WhiteFood(Food::coordArr[x], Food::coordArr[y]);
+        }
+
+        x++;
+        if (x == Food::N) {
+            x = 0;
+            y++;
+        }
+    }
 
 }
 
 Game::~Game() {
     delete p;
+
     for (int i = 0; i < noOfEnemies; i++) {
         delete* (en + i);
     }
-    delete en;
-}
+    delete[] en;
 
+    for (int i = 0; i < noOfFoods; i++) {
+        delete* (foods + i);
+    }
+    delete[] foods;
+}
+ 
 void Game::start_game()
 {
     srand(time(0));
@@ -154,7 +190,11 @@ void Game::start_game()
         /////  Call your functions here            ////
         //////////////////////////////////////////////
         p->moveFwd();
-        (*en)->moveFwd(p->currRing);
+
+        for (int i = 0; i < noOfEnemies; i++) {
+            (*(en+i))->moveFwd(p->currRing);
+        }
+
 
         checkForCollision();
 
@@ -163,8 +203,14 @@ void Game::start_game()
         window.clear(Color::Black); //clears the screen
         window.draw(background);  // setting background
         window.draw(p->car);
-        window.draw((*en)->car);
+        for (int i = 0; i < noOfEnemies; i++) {
+            window.draw((*(en+i))->car);
+        }
         window.draw(livesText);
+
+        for (int i = 0; i < noOfFoods; i++) {
+            window.draw((*(foods + i))->food);
+        }
 
         if (Keyboard::isKeyPressed(Keyboard::P)) {
             pauseGame();

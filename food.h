@@ -6,8 +6,10 @@ using namespace sf;
 class Food
 {
 public:
-	Food();
-	~Food();
+	static int N;
+	static int coordArr[];
+
+	Sprite food;
 
 protected:
 	int score;
@@ -17,9 +19,11 @@ protected:
 
 	int durationOfEffect;
 
-	Sprite food;
 	Texture tex;
 };
+
+int Food::N = 8;
+int Food::coordArr[] = { 99, 171, 235, 289, 440, 498, 560, 634 };
 
 class RedFood : public Food
 {
@@ -32,9 +36,9 @@ private:
 
 RedFood::RedFood(int x, int y)
 {
-	tex.loadFromFile(".\\img\fanoon_sprites\\red_rectangle.png");
+	tex.loadFromFile(".\\img\\fanoon_sprites\\red_rectangle.png");
 	food.setTexture(tex);
-	food.setScale(0.02, 0.02);
+	food.setScale(0.04, 0.04);
 	food.setPosition(x, y);
 
 	score = 10;
@@ -56,9 +60,9 @@ private:
 
 GreenFood::GreenFood(int x, int y)
 {
-	tex.loadFromFile(".\\img\fanoon_sprites\\green_circle.png");
+	tex.loadFromFile(".\\img\\fanoon_sprites\\green_circle.png");
 	food.setTexture(tex);
-	food.setScale(0.02, 0.02);
+	food.setScale(0.04, 0.04);
 	food.setPosition(x, y);
 
 	score = 20;
@@ -80,9 +84,9 @@ private:
 
 OrangeFood::OrangeFood(int x, int y)
 {
-	tex.loadFromFile(".\\img\fanoon_sprites\\orange_pentagon.png");
+	tex.loadFromFile(".\\img\\fanoon_sprites\\orange_pentagon.png");
 	food.setTexture(tex);
-	food.setScale(0.02, 0.02);
+	food.setScale(0.04, 0.04);
 	food.setPosition(x, y);
 
 	score = 10;
@@ -104,9 +108,9 @@ private:
 
 WhiteFood::WhiteFood(int x, int y)
 {
-	tex.loadFromFile(".\\img\fanoon_sprites\\white_triangle.png");
+	tex.loadFromFile(".\\img\\fanoon_sprites\\white_triangle.png");
 	food.setTexture(tex);
-	food.setScale(0.02, 0.02);
+	food.setScale(0.04, 0.04);
 	food.setPosition(x, y);
 
 	score = 0;
