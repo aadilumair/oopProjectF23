@@ -1,8 +1,13 @@
-
+#include <SFML/Graphics.hpp>
 #include "game.h"
+#include "Highscore.h"
+
+using namespace sf;
+
 class Menu {
-    Sprite background; //Game background sprite
+    Sprite background; // Game background sprite
     Texture bg_texture;
+    const std::string title = "Your Game Title"; // Replace with your game title
 
     void dispHelp() {
         bg_texture.loadFromFile("img/black.png");
@@ -14,7 +19,7 @@ class Menu {
             while (window.pollEvent(e))
             {
                 if (e.type == Event::Closed) // If cross/close is clicked/pressed
-                    window.close(); //close the game                        	    
+                    window.close(); // Close the game                        	    
             }
             window.clear(Color::Black);
             window.draw(background);
@@ -43,7 +48,7 @@ class Menu {
             while (window.pollEvent(e))
             {
                 if (e.type == Event::Closed) // If cross/close is clicked/pressed
-                    window.close(); //close the game                        	    
+                    window.close(); // Close the game                        	    
             }
             window.clear(Color::Black);
             window.draw(background);
@@ -67,11 +72,34 @@ class Menu {
         g.start_game();
     }
 
-public:
-    Menu(){
+    // New function for displaying instructions
+    void dispInstructions() {
+        bg_texture.loadFromFile("img/instructions.png"); // Replace with your instructions image
+        background.setTexture(bg_texture);
+        background.setScale(1, 1);
+        RenderWindow window(VideoMode(780, 780), title);
+        while (window.isOpen()) {
+            Event e;
+            while (window.pollEvent(e))
+            {
+                if (e.type == Event::Closed) // If cross/close is clicked/pressed
+                    window.close(); // Close the game
+            }
+            window.clear(Color::Black);
+            window.draw(background);
+            window.display();
+            if (Keyboard::isKeyPressed(Keyboard::B)) {
+                window.close();
+                dispMenu();
+            }
+        }
     }
 
-    void dispMenu(){
+public:
+    Menu() {
+    }
+
+    void dispMenu() {
         bg_texture.loadFromFile("img/newMenu.png");
         background.setTexture(bg_texture);
         background.setScale(1, 1);
@@ -81,7 +109,7 @@ public:
             while (window.pollEvent(e))
             {
                 if (e.type == Event::Closed) // If cross/close is clicked/pressed
-                    window.close(); //close the game                        	    
+                    window.close(); // Close the game                        	    
             }
             window.clear(Color::Black);
             window.draw(background);
@@ -92,7 +120,7 @@ public:
             }
             if (Keyboard::isKeyPressed(Keyboard::I)) {
                 window.close();
-                dispHelp();
+                dispInstructions();
             }
             if (Keyboard::isKeyPressed(Keyboard::E)) {
                 window.close();
@@ -103,7 +131,4 @@ public:
             }
         }
     }
-
-    
-
 };
