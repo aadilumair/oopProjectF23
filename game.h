@@ -30,6 +30,7 @@ public:
     Texture bg_texture;
     Font font;
     Text livesText;
+    Text scoresText;
     Player* p; //player 
     
     int noOfEnemies;
@@ -93,7 +94,7 @@ bool Game::endGame() {
         return true;
     }
     if (noOfFoods == 0) {
-        endMessage.setString("You win this level!");
+        endMessage.setString("You   win   this   level!");
         endMessage.setFont(font);
         endMessage.setCharacterSize(60);
         endMessage.setPosition(10, 366);
@@ -106,14 +107,14 @@ void Game::pauseGame() {
     playPause.setString("Paused");
     playPause.setFont(font);
     playPause.setCharacterSize(60);
-    playPause.setPosition(366, 50);
+    playPause.setPosition(100, 366);
 }
 
 void Game::resumeGame() {
     playPause.setString("");
     playPause.setFont(font);
     playPause.setCharacterSize(60);
-    playPause.setPosition(366, 50);
+    playPause.setPosition(100, 366);
 }
 
 Game::Game(int enemies)
@@ -138,6 +139,11 @@ Game::Game(int enemies)
     livesText.setFont(font);
     livesText.setCharacterSize(30);
     livesText.setFillColor(Color::White);
+
+    scoresText.setFont(font);
+    scoresText.setCharacterSize(30);
+    scoresText.setFillColor(Color::White);
+    scoresText.setPosition(0, 20);
 
     srand(time(0));
     noOfFoods = (Food::N) * (Food::N);
@@ -238,6 +244,7 @@ void Game::start_game()
         checkForCollision();
 
         livesText.setString(p->getStrHealth());
+        scoresText.setString("Score " + to_string(score));
 
         checkForFoodCollision();
 
@@ -245,6 +252,7 @@ void Game::start_game()
         window.draw(background);  // setting background
         
         window.draw(livesText);
+        window.draw(scoresText);
 
         for (int i = 0; i < noOfFoods; i++) {
             window.draw((*(foods + i))->food);
