@@ -5,6 +5,7 @@
 #include <iostream>
 using namespace std;
 #include "car.h"
+#include "food.h"
 const char title[] = "OOP-Project, Fall-2023";
 using namespace sf;
 
