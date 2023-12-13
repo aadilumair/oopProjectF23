@@ -312,7 +312,7 @@ Enemy::Enemy(std::string png_path, int max, int min)
 	speed = 0.1;
 	
 
-	moveDir = 'r';
+	
 
 	R[0].A.x = 99;
 	R[0].A.y = 99;
@@ -387,11 +387,41 @@ Enemy::Enemy(std::string png_path, int max, int min)
 	R[3].H.y = 366;
 
 	maxRing = max;
-	currRing = max;
+	
 	minRing = min;
 	carTexture.loadFromFile(png_path);
 	car.setTexture(carTexture);
-	car.setPosition(R[maxRing].E.x, R[maxRing].E.y);
+
+	int rand1 = rand() % 100;
+	int r;
+	if (rand1 < 25)
+		r = 0;
+	if ((rand1 >= 25) && (rand1 < 50))
+		r = 1;
+	if ((rand1 >= 50) && (rand1 < 75))
+		r = 2;
+	if (rand1 >= 75)
+		r = 3;
+	currRing = r;
+	rand1 = rand() % 100;
+
+	if (rand1 < 33)
+	{
+		car.setPosition(R[r].E.x, R[r].E.y);
+		moveDir = 'r';
+	}
+	if ((rand1 >= 33) && (rand1 < 66))
+	{
+		car.setPosition(R[r].F.x, R[r].F.y);
+		moveDir = 'u';
+	}
+	if (rand1 >= 66)
+	{
+		car.setPosition(R[r].H.x, R[r].H.y);
+		moveDir = 'd';
+	}
+
+	
 	car.setScale(0.06, 0.06);
 }
 
@@ -457,6 +487,7 @@ void Enemy::move(int playerRing) {
 
 
 void Enemy::moveFwd(int playerRing) { //This function is the default auto movement of the player counter clockwise
+	//std::cout << "(" << car.getPosition().x << "," << car.getPosition().y << ")\n";
 	if ((car.getPosition().x == R[currRing].A.x) && (car.getPosition().y == R[currRing].A.y))//corner A 
 	{
 		moveDir = 'r';//set movement to right

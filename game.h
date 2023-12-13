@@ -56,10 +56,11 @@ public:
 
 void Game::checkForCollision() {
     for (int i = 0; i < noOfEnemies; i++) {
-        if ((int(p->car.getPosition().x) == int((*en + i)->car.getPosition().x)) &&
-            (int(p->car.getPosition().y) == int((*en + i)->car.getPosition().y))) {
+        if ((int(p->car.getPosition().x) == int((*(en + i))->car.getPosition().x)) &&
+            (int(p->car.getPosition().y) == int((*(en + i))->car.getPosition().y))) {
             p->modifyHealth(-1);
             
+
             p->car.setPosition(p->R[0].G.x, p->R[0].G.y);
             p->currRing = 0;
             p->moveDir = 'r';
@@ -288,7 +289,7 @@ void Game::start_game()
                 window.close(); //close the game                        	    
         }
 
-        if (Keyboard::isKeyPressed(Keyboard::I)) //If left key is CLICKED
+        if (Keyboard::isKeyPressed(Keyboard::I)) //If I key is CLICKED
             leftClick = true;
 
         if (e.type == sf::Event::KeyReleased) {
@@ -300,7 +301,7 @@ void Game::start_game()
             }
         }
 
-        if (Keyboard::isKeyPressed(Keyboard::O)) // If right key is CLICKED
+        if (Keyboard::isKeyPressed(Keyboard::O)) // If O key is CLICKED
             rightClick = true;
         if (e.type == sf::Event::KeyReleased) {
             if (e.key.code == sf::Keyboard::O) {
