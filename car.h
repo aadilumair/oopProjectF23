@@ -402,6 +402,12 @@ Enemy::Enemy(std::string png_path, int max, int min)
 		r = 2;
 	if (rand1 >= 75)
 		r = 3;
+
+	if (r > maxRing)
+		r = maxRing;
+	if (r < minRing)
+		r = minRing;
+
 	currRing = r;
 	rand1 = rand() % 100;
 
