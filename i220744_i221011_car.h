@@ -1,10 +1,11 @@
 #include <SFML/Graphics.hpp>
 #include<string.h>
 using namespace sf;
-
+// Structure to represent coordinates (x, y)
 struct Coord {
 	int x, y;
 };
+// Structure to represent a ring with points A, B, C, D, E, F, G, H
 struct Ring
 {
 	Coord A, B, C, D, E, F, G, H;
@@ -17,15 +18,15 @@ public:
 	float getSpeed();
 	void setSpeed(float spd);
 	Sprite car;
-	Ring R[4];
-	char moveDir;
+	Ring R[4]; // Array to store rings for the car
+	char moveDir; // Direction of movement (u: up, d: down, l: left, r: right)
+	int currRing; // Current ring index
 
-	int currRing;
 
 protected:
 	float speed;
 	Texture carTexture;
-	virtual bool closeToCar(int x, int y) = 0;
+	virtual bool closeToCar(int x, int y) = 0; // Pure virtual function for checking proximity
 };
 
 float Car::getSpeed() {
@@ -35,7 +36,7 @@ void Car::setSpeed(float spd) {
 	speed = spd;
 }
 
-
+// Player class, derived from Car
 class Player : public Car{
 private:
 	int health;
@@ -51,10 +52,11 @@ public:
 	bool getBoost();
 	void move(std::string s);
 	void moveFwd();
-	bool closeToCar(int x, int y);
+	bool closeToCar(int x, int y); // Implementation of pure virtual function
 };
-
+// Constructor for Player
 Player::Player(std::string png_path){
+	// Initialization of member variables and loading texture
 	speed = 0.2;
 	boostApplied = false;
 	health = 3;
@@ -139,15 +141,19 @@ Player::Player(std::string png_path){
 	R[3].H.y = 366;
 }
 
+// Methods for Player class
 int Player::getHealth() {
+	// Get current health
 	return health;
 }
 
 string Player::getStrHealth() {
+	// Get health as a string
 	return "Lives " + to_string(health);
 }
 
 bool Player::setHealth(int h) {
+	// Set health, ensuring it's non-negative
 	if (h >= 0) {
 		health = h;
 		return true;
@@ -156,6 +162,7 @@ bool Player::setHealth(int h) {
 }
 
 bool Player::modifyHealth(int h) {
+	// Modify health by a given value, ensuring it stays non-negative
 	if ((h + health) >= 0) {
 		health += h;
 		return true;
@@ -164,10 +171,12 @@ bool Player::modifyHealth(int h) {
 }
 
 bool Player::setBoost(bool isApplied) {
+	// Set boost status
 	boostApplied = isApplied;
 	return true;
 }
 bool Player::getBoost() {
+	// Get boost status
 	return boostApplied;
 }
 
@@ -176,7 +185,8 @@ void Player::move(std::string s) {
 	if the car is first close to points EFGH. Then it will
 	check the direction the car is going and appropriatly 
 	moves the car b/w rings*/
-
+	
+	// Move player between rings based on input direction
 
 	if (closeToCar(R[currRing].E.x, R[currRing].E.y) //Check if the the car is close to a move point
 		|| closeToCar(R[currRing].F.x, R[currRing].F.y)
