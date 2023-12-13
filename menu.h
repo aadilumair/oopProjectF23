@@ -68,7 +68,7 @@ class Menu {
     }
 
     void playGame() {
-        Game g(1);
+        Game g(2);
         g.start_game();
     }
 

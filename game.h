@@ -1,5 +1,5 @@
-#include<cstdlib>
-#include<time.h>
+#include <cstdlib>
+#include <time.h>
 #include <SFML/Graphics.hpp>
 #include <SFML/System/Clock.hpp>
 #include <time.h>
@@ -19,10 +19,12 @@ private:
     bool endGame();
     void pauseGame();
     void resumeGame();
+    void createEnemies();
     void returnEnemy();
     bool endBoost();
 
     int score;
+    int level;
 
     Text endMessage;
     Text playPause;
@@ -45,7 +47,7 @@ public:
     int noOfFoods;
     Food** foods;
 
-    Game(int enemies);
+    Game(int level);
     ~Game();
     
 
@@ -148,16 +150,43 @@ void Game::resumeGame() {
     playPause.setPosition(100, 366);
 }
 
+void Game::createEnemies() {
+    if (level == 1) {
+        noOfEnemies = 1;
+        en = new Enemy * [noOfEnemies];
+        for (int i = 0; i < noOfEnemies; i++) {
+            *(en + i) = new Enemy(".\\img\\fanoon_sprites\\spooder.png", 2, 1);
+        }
+    }
+    else if (level == 2) {
+        noOfEnemies = 1;
+        en = new Enemy * [noOfEnemies];
+        for (int i = 0; i < noOfEnemies; i++) {
+            *(en + i) = new Enemy(".\\img\\fanoon_sprites\\spooder.png", 3, 0);
+        }
+    }
+    else if (level == 3) {
+        noOfEnemies = 1;
+        en = new Enemy * [noOfEnemies];
+        for (int i = 0; i < noOfEnemies; i++) {
+            *(en + i) = new Enemy(".\\img\\fanoon_sprites\\spooder.png", 3, 0);
+            (*(en + i))->setSpeed(0.5);
+        }
+    }
+    else if (level == 4) {
+        noOfEnemies = 2;
+        en = new Enemy * [noOfEnemies];
+        for (int i = 0; i < noOfEnemies; i++) {
+            *(en + i) = new Enemy(".\\img\\fanoon_sprites\\spooder.png", 4, 0);
+        }
+    }
+}
+
 void Game::returnEnemy() {
     
     if (noOfEnemies == 0) {
         if (int((enemyClock.getElapsedTime()).asSeconds()) >= 10) {
-            noOfEnemies = noOfInactiveEnemies;
-            en = new Enemy * [noOfEnemies];
-
-            for (int i = 0; i < noOfEnemies; i++) {
-                *(en + i) = new Enemy(".\\img\\fanoon_sprites\\spooder.png", 2, 1);
-            }
+            createEnemies();
         }
     }
     
@@ -175,9 +204,9 @@ bool Game::endBoost() {
     return false;
 }
 
-Game::Game(int enemies)
+Game::Game(int l)
 {
-
+    
     bg_texture.loadFromFile("img/maze1.png");
     background.setTexture(bg_texture);
     background.setScale(1, 1);
@@ -185,13 +214,9 @@ Game::Game(int enemies)
 
     score = 0;
 
-    noOfEnemies = enemies;
-
-    en = new Enemy * [noOfEnemies];
-
-    for (int i = 0; i < noOfEnemies; i++) {
-        *(en + i) = new Enemy(".\\img\\fanoon_sprites\\spooder.png", 2, 1);
-    }
+    level = l;
+    
+    createEnemies();
 
     font.loadFromFile(".\\fonts\\ARCADECLASSIC.TTF");
     livesText.setFont(font);

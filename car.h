@@ -25,7 +25,7 @@ public:
 protected:
 	float speed;
 	Texture carTexture;
-	bool closeToCar(int x, int y);
+	virtual bool closeToCar(int x, int y) = 0;
 };
 
 float Car::getSpeed() {
@@ -35,21 +35,6 @@ void Car::setSpeed(float spd) {
 	speed = spd;
 }
 
-bool Car::closeToCar(int x, int y) {
-	int b = 40;//bound length
-	
-	if ((((car.getPosition().y) > (y + b)) || ((car.getPosition().y) < (y - b))))
-	{
-		return false;
-	}
-
-	if ((((car.getPosition().x) > (x + b)) || ((car.getPosition().x) < (x - b))))
-	{
-		return false;
-	}
-	
-	return true;
-}
 
 class Player : public Car{
 private:
@@ -66,6 +51,7 @@ public:
 	bool getBoost();
 	void move(std::string s);
 	void moveFwd();
+	bool closeToCar(int x, int y);
 };
 
 Player::Player(std::string png_path){
@@ -289,6 +275,22 @@ void Player::moveFwd() { //This function is the default auto movement of the pla
 	}
 }
 
+bool Player::closeToCar(int x, int y) {
+	int b = 40;//bound length
+
+	if ((((car.getPosition().y) > (y + b)) || ((car.getPosition().y) < (y - b))))
+	{
+		return false;
+	}
+
+	if ((((car.getPosition().x) > (x + b)) || ((car.getPosition().x) < (x - b))))
+	{
+		return false;
+	}
+
+	return true;
+}
+
 class Enemy : public Car
 {
 public:
@@ -302,6 +304,7 @@ private:
 	int maxRing;
 	int minRing;
 	void move(int playerRing);
+	bool closeToCar(int x, int y);
 };
 
 Enemy::Enemy(std::string png_path, int max, int min)
@@ -398,7 +401,6 @@ void Enemy::move(int playerRing) {
 	check the ring the player is going and appropriatly
 	moves the enemy b/w rings*/
 	string s = "";
-	int random = rand() % 100;
 	if (playerRing>currRing) {
 		s = "l";
 	}
@@ -406,6 +408,7 @@ void Enemy::move(int playerRing) {
 		s = "r";
 	}
 
+	int deviation = 5;
 
 	if (closeToCar(R[currRing].E.x, R[currRing].E.y) //Check if the the car is close to a move point
 		|| closeToCar(R[currRing].F.x, R[currRing].F.y)
@@ -417,16 +420,16 @@ void Enemy::move(int playerRing) {
 			if (currRing < maxRing) {//Move to inner ring
 				currRing++;
 				if (moveDir == 'r') {
-					car.setPosition(R[currRing].E.x, R[currRing].E.y);
+					car.setPosition(R[currRing].E.x + deviation, R[currRing].E.y);
 				}
 				if (moveDir == 'l') {
-					car.setPosition(R[currRing].G.x, R[currRing].G.y);
+					car.setPosition(R[currRing].G.x - deviation, R[currRing].G.y);
 				}
 				if (moveDir == 'd') {
-					car.setPosition(R[currRing].H.x, R[currRing].H.y);
+					car.setPosition(R[currRing].H.x, R[currRing].H.y + deviation);
 				}
 				if (moveDir == 'u') {
-					car.setPosition(R[currRing].F.x, R[currRing].F.y);
+					car.setPosition(R[currRing].F.x, R[currRing].F.y - deviation);
 				}
 			}
 		}
@@ -434,16 +437,16 @@ void Enemy::move(int playerRing) {
 			if (currRing > minRing) {
 				currRing--;
 				if (moveDir == 'r') {
-					car.setPosition(R[currRing].E.x, R[currRing].E.y);
+					car.setPosition(R[currRing].E.x + deviation, R[currRing].E.y);
 				}
 				if (moveDir == 'l') {
-					car.setPosition(R[currRing].G.x, R[currRing].G.y);
+					car.setPosition(R[currRing].G.x - deviation, R[currRing].G.y);
 				}
 				if (moveDir == 'd') {
-					car.setPosition(R[currRing].H.x, R[currRing].H.y);
+					car.setPosition(R[currRing].H.x, R[currRing].H.y + deviation);
 				}
 				if (moveDir == 'u') {
-					car.setPosition(R[currRing].F.x, R[currRing].F.y);
+					car.setPosition(R[currRing].F.x, R[currRing].F.y - deviation);
 				}
 			}
 		}
@@ -515,4 +518,20 @@ void Enemy::setCurrRing(int r){
 }
 void Enemy::randChangeRing(){
 	//if at turnPoint, then take random value form 0 to maxRing and change currRing to this value. Also move the car to that track
+}
+
+bool Enemy::closeToCar(int x, int y) {
+	int b = 1;//bound length
+
+	if ((((car.getPosition().y) > (y + b)) || ((car.getPosition().y) < (y - b))))
+	{
+		return false;
+	}
+
+	if ((((car.getPosition().x) > (x + b)) || ((car.getPosition().x) < (x - b))))
+	{
+		return false;
+	}
+
+	return true;
 }
