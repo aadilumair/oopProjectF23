@@ -68,13 +68,52 @@ class Menu {
     }
 
     void playGame() {
-        Game g(2);
-        g.start_game();
+        bg_texture.loadFromFile("img/black.png");
+        background.setTexture(bg_texture);
+        background.setScale(1, 1);
+        RenderWindow window(VideoMode(780, 780), title);
+        while (window.isOpen()) {
+            Event e;
+            while (window.pollEvent(e))
+            {
+                if (e.type == Event::Closed) // If cross/close is clicked/pressed
+                    window.close(); // Close the game                        	    
+            }
+            window.clear(Color::Black);
+            window.draw(background);
+            window.display();
+            if (Keyboard::isKeyPressed(Keyboard::Num1)) {
+                window.close();
+                Game g(1);
+                g.start_game();
+            }
+            if (Keyboard::isKeyPressed(Keyboard::Num2)) {
+                window.close();
+                Game g(2);
+                g.start_game();
+            }
+            if (Keyboard::isKeyPressed(Keyboard::Num3)) {
+                window.close();
+                Game g(3);
+                g.start_game();
+            }
+            if (Keyboard::isKeyPressed(Keyboard::Num4)) {
+                window.close();
+                Game g(4);
+                g.start_game();
+            }
+            if (Keyboard::isKeyPressed(Keyboard::E)) {
+                window.close();
+            }
+        }
+        
+        
+        
     }
 
     // New function for displaying instructions
     void dispInstructions() {
-        bg_texture.loadFromFile("img/instructions.png"); // Replace with your instructions image
+        bg_texture.loadFromFile("img/instructions.png");
         background.setTexture(bg_texture);
         background.setScale(1, 1);
         RenderWindow window(VideoMode(780, 780), title);
