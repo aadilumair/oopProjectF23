@@ -8,7 +8,6 @@
 
 const char title[] = "OOP-Project, Fall-2023";
 using namespace sf;
-using namespace std;
 
 class Game {
 private:
@@ -382,7 +381,7 @@ void Game::start_game() {
         checkForCollision();
 
         livesText.setString(p->getStrHealth());
-        scoresText.setString("Score " + to_string(score));
+        scoresText.setString("Score " + std::to_string(score));
 
         checkForFoodCollision();
         returnEnemy();

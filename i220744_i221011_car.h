@@ -1,6 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include<string.h>
 using namespace sf;
+using namespace std;
 // Structure to represent coordinates (x, y)
 struct Coord {
 	int x, y;
