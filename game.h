@@ -288,11 +288,11 @@ void Game::start_game()
                 window.close(); //close the game                        	    
         }
 
-        if (Keyboard::isKeyPressed(Keyboard::Left)) //If left key is CLICKED
+        if (Keyboard::isKeyPressed(Keyboard::I)) //If left key is CLICKED
             leftClick = true;
 
         if (e.type == sf::Event::KeyReleased) {
-            if (e.key.code == sf::Keyboard::Left) {
+            if (e.key.code == sf::Keyboard::I) {
                 if (leftClick) {
                     p->move("l");    // Player will move to INNER RING
                     leftClick = false;
@@ -300,10 +300,10 @@ void Game::start_game()
             }
         }
 
-        if (Keyboard::isKeyPressed(Keyboard::Right)) // If right key is CLICKED
+        if (Keyboard::isKeyPressed(Keyboard::O)) // If right key is CLICKED
             rightClick = true;
         if (e.type == sf::Event::KeyReleased) {
-            if (e.key.code == sf::Keyboard::Right) {
+            if (e.key.code == sf::Keyboard::O) {
                 if (rightClick) {
                     p->move("r");    // Player will move to OUTER RING
                     rightClick = false;
