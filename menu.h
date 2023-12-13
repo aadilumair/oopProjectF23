@@ -7,7 +7,7 @@ using namespace sf;
 class Menu {
     Sprite background; // Game background sprite
     Texture bg_texture;
-    const std::string title = "Your Game Title"; // Replace with your game title
+    const std::string title = "OOP Project Fall 2023"; // Replace with your game title
 
     void dispHelp() {
         bg_texture.loadFromFile("img/black.png");
@@ -67,7 +67,7 @@ class Menu {
         }
     }
 
-    void playGame() {
+    void levelSelect() {
         bg_texture.loadFromFile("img/black.png");
         background.setTexture(bg_texture);
         background.setScale(1, 1);
@@ -84,31 +84,92 @@ class Menu {
             window.display();
             if (Keyboard::isKeyPressed(Keyboard::Num1)) {
                 window.close();
-                Game g(1);
-                g.start_game();
+                playGame(1);
             }
             if (Keyboard::isKeyPressed(Keyboard::Num2)) {
                 window.close();
-                Game g(2);
-                g.start_game();
+                playGame(2);
             }
             if (Keyboard::isKeyPressed(Keyboard::Num3)) {
                 window.close();
-                Game g(3);
-                g.start_game();
+                playGame(3);
             }
             if (Keyboard::isKeyPressed(Keyboard::Num4)) {
                 window.close();
-                Game g(4);
-                g.start_game();
+                playGame(4);
             }
             if (Keyboard::isKeyPressed(Keyboard::E)) {
                 window.close();
             }
         }
-        
-        
-        
+    }
+
+    void playGame(int level = 1) {
+        Game g(level);
+        g.start_game();
+        nextLevel(g.getScore(),g.getLevel(), g.getWinLose());
+    }
+
+    void nextLevel(int score, int currLevel, bool winLose) { //Complete display of score and level and also whether you win or lose and to call it from playgame
+        bg_texture.loadFromFile("img/black.png");
+        background.setTexture(bg_texture);
+        background.setScale(1, 1);
+        RenderWindow window(VideoMode(780, 780), title);
+
+        Font font;
+        font.loadFromFile(".\\fonts\\ARCADECLASSIC.TTF");
+
+        Text endMessage;
+        if(winLose)
+            endMessage.setString("Winner  of  the  Level");
+        else
+            endMessage.setString("Wasted");
+        endMessage.setFont(font);
+        endMessage.setCharacterSize(60);
+        endMessage.setPosition(100, 366);
+
+        Text levelStr;
+        levelStr.setString("Level  " + to_string(currLevel));
+        levelStr.setFont(font);
+        levelStr.setCharacterSize(30);
+        levelStr.setPosition(100, 450);
+        Text scoreStr;
+        scoreStr.setString("Score  " + to_string(score));
+        scoreStr.setFont(font);
+        scoreStr.setCharacterSize(30);
+        scoreStr.setPosition(100, 550);
+
+        while (window.isOpen()) {
+            Event e;
+            while (window.pollEvent(e))
+            {
+                if (e.type == Event::Closed) // If cross/close is clicked/pressed
+                    window.close(); // Close the game                        	    
+            }
+            window.clear(Color::Black);
+            window.draw(background);
+            window.draw(endMessage);
+            window.draw(levelStr);
+            window.draw(scoreStr);
+
+            window.display();
+            if (Keyboard::isKeyPressed(Keyboard::S)) {
+                window.close();
+                playGame(currLevel + 1);
+            }
+            if (Keyboard::isKeyPressed(Keyboard::P)) {
+                window.close();
+                playGame(currLevel);
+            }
+            if (Keyboard::isKeyPressed(Keyboard::P)) {
+                window.close();
+                dispMenu();
+            }
+
+            if (Keyboard::isKeyPressed(Keyboard::E)) {
+                window.close();
+            }
+        }
     }
 
     // New function for displaying instructions
@@ -167,6 +228,10 @@ public:
             if (Keyboard::isKeyPressed(Keyboard::H)) {
                 window.close();
                 dispHighScores();
+            }
+            if (Keyboard::isKeyPressed(Keyboard::L)) {
+                window.close();
+                levelSelect();
             }
         }
     }

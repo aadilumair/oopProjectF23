@@ -2,8 +2,6 @@
 #include <time.h>
 #include <SFML/Graphics.hpp>
 #include <SFML/System/Clock.hpp>
-#include <time.h>
-#include <Windows.h>
 #include <iostream>
 using namespace std;
 #include "car.h"
@@ -23,10 +21,11 @@ private:
     void returnEnemy();
     bool endBoost();
 
+    bool winLose;
+
     int score;
     int level;
 
-    Text endMessage;
     Text playPause;
     Clock enemyClock;
     Clock boostClock;
@@ -52,6 +51,10 @@ public:
     
 
     void start_game();
+
+    int getScore();
+    int getLevel();
+    bool getWinLose();
 };
 
 void Game::checkForCollision() {
@@ -121,17 +124,13 @@ void Game::checkForFoodCollision() {
 
 bool Game::endGame() {
     if (p->getHealth() == 0) {
-        endMessage.setString("Wasted");
-        endMessage.setFont(font);
-        endMessage.setCharacterSize(60);
-        endMessage.setPosition(100, 366);
+        winLose = false;
+        
         return true;
     }
     if (noOfFoods == 0) {
-        endMessage.setString("You   win   this   level!");
-        endMessage.setFont(font);
-        endMessage.setCharacterSize(60);
-        endMessage.setPosition(10, 366);
+        winLose = true;
+        
         return true;
     }
     return false;
@@ -359,7 +358,7 @@ void Game::start_game()
         }
 
         if (endGame()){
-            window.draw(endMessage);
+            
             window.display();
             break;
         }
@@ -368,7 +367,18 @@ void Game::start_game()
 
         window.display();  //Displying all the sprites
     }
-    Sleep(10000);
     
 
+}
+
+int Game::getScore() {
+    return score;
+}
+
+int Game::getLevel() {
+    return level;
+}
+
+bool Game::getWinLose() {
+    return winLose;
 }
