@@ -1,6 +1,7 @@
 #include<cstdlib>
 #include<time.h>
 #include <SFML/Graphics.hpp>
+#include <SFML/System/Clock.hpp>
 #include <time.h>
 #include <Windows.h>
 #include <iostream>
@@ -18,11 +19,13 @@ private:
     bool endGame();
     void pauseGame();
     void resumeGame();
+    void returnEnemy();
 
     int score;
 
     Text endMessage;
     Text playPause;
+    Clock clock;
 
 
 public:
@@ -34,6 +37,7 @@ public:
     Player* p; //player 
     
     int noOfEnemies;
+    int noOfInactiveEnemies;
     Enemy** en;
 
     int noOfFoods;
@@ -80,6 +84,21 @@ void Game::checkForFoodCollision() {
             (int(p->car.getPosition().y) == int((*(foods + i))->food.getPosition().y))) {
             p->modifyHealth((*(foods+i))->getExtraLives());
             score += (*(foods + i))->getScore();
+
+            if (noOfEnemies) {
+                if ((*(foods + i))->getHideEnemy()) {
+                    for (int i = 0; i < noOfEnemies; i++) {
+                        delete* (en + i);
+                    }
+                    delete[] en;
+                    noOfInactiveEnemies = noOfEnemies;
+                    noOfEnemies = 0;
+
+                    clock.restart();
+                }
+            }
+            
+
             popFood(i);
         }
     }
@@ -115,6 +134,22 @@ void Game::resumeGame() {
     playPause.setFont(font);
     playPause.setCharacterSize(60);
     playPause.setPosition(100, 366);
+}
+
+void Game::returnEnemy() {
+    
+    if (noOfEnemies == 0) {
+        if (int((clock.getElapsedTime()).asSeconds()) >= 10) {
+            noOfEnemies = noOfInactiveEnemies;
+            en = new Enemy * [noOfEnemies];
+
+            for (int i = 0; i < noOfEnemies; i++) {
+                *(en + i) = new Enemy(".\\img\\fanoon_sprites\\spooder.png", 2, 1);
+            }
+        }
+    }
+    
+    
 }
 
 Game::Game(int enemies)
@@ -158,10 +193,10 @@ Game::Game(int enemies)
         if ((random > 25)&&(random <= 50)) {
             *(foods + i) = new GreenFood(Food::coordArr[x], Food::coordArr[y]);
         }
-        if ((random > 50) && (random <= 75)) {
+        if ((random > 50) && (random <= 90)) {
             *(foods + i) = new OrangeFood(Food::coordArr[x], Food::coordArr[y]);
         }
-        if (random > 75) {
+        if (random > 10) {
             *(foods + i) = new WhiteFood(Food::coordArr[x], Food::coordArr[y]);
         }
 
@@ -192,14 +227,10 @@ void Game::start_game()
 {
     srand(time(0));
     RenderWindow window(VideoMode(780, 780), title);
-    Clock clock;
-    float timer = 0;
     bool leftClick = false, rightClick = false;
     while (window.isOpen())
     {
-        float time = clock.getElapsedTime().asSeconds();
-        clock.restart();
-        timer += time;
+        
         //cout<<time<<endl; 
         Event e;
         while (window.pollEvent(e))
@@ -247,6 +278,7 @@ void Game::start_game()
         scoresText.setString("Score " + to_string(score));
 
         checkForFoodCollision();
+        returnEnemy();
 
         window.clear(Color::Black); //clears the screen
         window.draw(background);  // setting background
