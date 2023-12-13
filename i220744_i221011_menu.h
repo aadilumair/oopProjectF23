@@ -114,7 +114,14 @@ class Menu {
                 window.close();
                 playGame(2);
             }
-            // ... repeat for other levels
+            if (Keyboard::isKeyPressed(Keyboard::Num3)) {
+                window.close();
+                playGame(3);
+            }
+            if (Keyboard::isKeyPressed(Keyboard::Num4)) {
+                window.close();
+                playGame(4);
+            }
             if (Keyboard::isKeyPressed(Keyboard::E)) {
                 window.close();
             }
