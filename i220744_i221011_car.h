@@ -563,9 +563,7 @@ void Enemy::setMaxRing(int r){
 void Enemy::setCurrRing(int r){
 	maxRing = r;
 }
-void Enemy::randChangeRing(){
-	//if at turnPoint, then take random value form 0 to maxRing and change currRing to this value. Also move the car to that track
-}
+
 
 bool Enemy::closeToCar(int x, int y) {
 	int b = 1;//bound length
