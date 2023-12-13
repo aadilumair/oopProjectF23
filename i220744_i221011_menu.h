@@ -1,6 +1,6 @@
 #include <SFML/Graphics.hpp>
-#include "game.h"
-#include "Highscore.h"
+#include "i220744_i221011_game.h"
+#include "i220744_i221011_Highscore.h"
 
 using namespace sf;
 

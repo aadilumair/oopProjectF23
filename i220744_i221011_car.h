@@ -493,7 +493,6 @@ void Enemy::move(int playerRing) {
 
 
 void Enemy::moveFwd(int playerRing) { //This function is the default auto movement of the player counter clockwise
-	//std::cout << "(" << car.getPosition().x << "," << car.getPosition().y << ")\n";
 	if ((car.getPosition().x == R[currRing].A.x) && (car.getPosition().y == R[currRing].A.y))//corner A 
 	{
 		moveDir = 'r';//set movement to right

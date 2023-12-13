@@ -4,8 +4,8 @@
 #include <SFML/System/Clock.hpp>
 #include <iostream>
 using namespace std;
-#include "car.h"
-#include "food.h"
+#include "i220744_i221011_car.h"
+#include "i220744_i221011_food.h"
 const char title[] = "OOP-Project, Fall-2023";
 using namespace sf;
 
