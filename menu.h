@@ -7,7 +7,7 @@ using namespace sf;
 class Menu {
     Sprite background; // Game background sprite
     Texture bg_texture;
-    const std::string title = "OOP Project Fall 2023"; // Replace with your game title
+    const std::string title = "OOP-Project, Fall-2023"; // Replace with your game title
 
     void dispHelp() {
         bg_texture.loadFromFile("img/black.png");
