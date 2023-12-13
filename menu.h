@@ -68,7 +68,7 @@ class Menu {
     }
 
     void levelSelect() {
-        bg_texture.loadFromFile("img/black.png");
+        bg_texture.loadFromFile("img/levelSelector.png");
         background.setTexture(bg_texture);
         background.setScale(1, 1);
         RenderWindow window(VideoMode(780, 780), title);
@@ -111,7 +111,7 @@ class Menu {
     }
 
     void nextLevel(int score, int currLevel, bool winLose) { //Complete display of score and level and also whether you win or lose and to call it from playgame
-        bg_texture.loadFromFile("img/black.png");
+        bg_texture.loadFromFile("img/endGame.png");
         background.setTexture(bg_texture);
         background.setScale(1, 1);
         RenderWindow window(VideoMode(780, 780), title);
@@ -126,18 +126,18 @@ class Menu {
             endMessage.setString("Wasted");
         endMessage.setFont(font);
         endMessage.setCharacterSize(60);
-        endMessage.setPosition(100, 366);
+        endMessage.setPosition(100, 250);
 
         Text levelStr;
         levelStr.setString("Level  " + to_string(currLevel));
         levelStr.setFont(font);
         levelStr.setCharacterSize(30);
-        levelStr.setPosition(100, 450);
+        levelStr.setPosition(100, 350);
         Text scoreStr;
         scoreStr.setString("Score  " + to_string(score));
         scoreStr.setFont(font);
         scoreStr.setCharacterSize(30);
-        scoreStr.setPosition(100, 550);
+        scoreStr.setPosition(100, 400);
 
         while (window.isOpen()) {
             Event e;
