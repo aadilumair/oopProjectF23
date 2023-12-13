@@ -54,6 +54,7 @@ bool Car::closeToCar(int x, int y) {
 class Player : public Car{
 private:
 	int health;
+	bool boostApplied;
 
 public:
 	Player(std::string png_path);
@@ -61,12 +62,15 @@ public:
 	string getStrHealth();
 	bool setHealth(int);
 	bool modifyHealth(int);
+	bool setBoost(bool);
+	bool getBoost();
 	void move(std::string s);
 	void moveFwd();
 };
 
 Player::Player(std::string png_path){
 	speed = 0.2;
+	boostApplied = false;
 	health = 3;
 	carTexture.loadFromFile(png_path);
 	car.setTexture(carTexture);
@@ -171,6 +175,14 @@ bool Player::modifyHealth(int h) {
 		return true;
 	}
 	return false;
+}
+
+bool Player::setBoost(bool isApplied) {
+	boostApplied = isApplied;
+	return true;
+}
+bool Player::getBoost() {
+	return boostApplied;
 }
 
 void Player::move(std::string s) { 

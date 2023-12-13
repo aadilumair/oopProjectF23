@@ -20,12 +20,14 @@ private:
     void pauseGame();
     void resumeGame();
     void returnEnemy();
+    bool endBoost();
 
     int score;
 
     Text endMessage;
     Text playPause;
-    Clock clock;
+    Clock enemyClock;
+    Clock boostClock;
 
 
 public:
@@ -94,9 +96,19 @@ void Game::checkForFoodCollision() {
                     noOfInactiveEnemies = noOfEnemies;
                     noOfEnemies = 0;
 
-                    clock.restart();
+                    enemyClock.restart();
                 }
             }
+
+            if (!(p->getBoost())) {
+                if ((*(foods + i))->getBoost()) {
+                    p->setSpeed(p->getSpeed() * 1.5);
+                    p->setBoost(true);
+                    boostClock.restart();
+                }
+            }
+            
+            
             
 
             popFood(i);
@@ -139,7 +151,7 @@ void Game::resumeGame() {
 void Game::returnEnemy() {
     
     if (noOfEnemies == 0) {
-        if (int((clock.getElapsedTime()).asSeconds()) >= 10) {
+        if (int((enemyClock.getElapsedTime()).asSeconds()) >= 10) {
             noOfEnemies = noOfInactiveEnemies;
             en = new Enemy * [noOfEnemies];
 
@@ -150,6 +162,17 @@ void Game::returnEnemy() {
     }
     
     
+}
+
+bool Game::endBoost() {
+    if (p->getBoost()) {
+        if (boostClock.getElapsedTime().asSeconds() >= 10) {
+            p->setBoost(false);
+            p->setSpeed(p->getSpeed() / 1.5);
+            return true;
+        }
+    }
+    return false;
 }
 
 Game::Game(int enemies)
@@ -187,16 +210,16 @@ Game::Game(int enemies)
     int y = 0;
     for (int i = 0; i < noOfFoods; i++) {
         int random = rand() % 100;
-        if (random <= 25) {
+        if (random <= 70) {
             *(foods + i) = new RedFood(Food::coordArr[x], Food::coordArr[y]);
         }
-        if ((random > 25)&&(random <= 50)) {
+        if ((random > 70)&&(random <= 80)) {
             *(foods + i) = new GreenFood(Food::coordArr[x], Food::coordArr[y]);
         }
-        if ((random > 50) && (random <= 90)) {
+        if ((random > 80) && (random <= 90)) {
             *(foods + i) = new OrangeFood(Food::coordArr[x], Food::coordArr[y]);
         }
-        if (random > 10) {
+        if (random > 90) {
             *(foods + i) = new WhiteFood(Food::coordArr[x], Food::coordArr[y]);
         }
 
@@ -211,14 +234,17 @@ Game::Game(int enemies)
 
 Game::~Game() {
     delete p;
-
-    for (int i = 0; i < noOfEnemies; i++) {
-        delete* (en + i);
+    if (noOfEnemies) {
+        for (int i = 0; i < noOfEnemies; i++) {
+            delete* (en + i);
+        }
+        delete[] en;
     }
-    delete[] en;
-
-    for (int i = 0; i < noOfFoods; i++) {
-        delete* (foods + i);
+    
+    if (noOfFoods) {
+        for (int i = 0; i < noOfFoods; i++) {
+            delete* (foods + i);
+        }
     }
     delete[] foods;
 }
@@ -230,8 +256,6 @@ void Game::start_game()
     bool leftClick = false, rightClick = false;
     while (window.isOpen())
     {
-        
-        //cout<<time<<endl; 
         Event e;
         while (window.pollEvent(e))
         {
@@ -279,6 +303,7 @@ void Game::start_game()
 
         checkForFoodCollision();
         returnEnemy();
+        endBoost();
 
         window.clear(Color::Black); //clears the screen
         window.draw(background);  // setting background
